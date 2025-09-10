@@ -3,14 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tableau de Bord - Agri-Intel 360</title>
+  <title>Agri-Intel 360 - Plateforme d'Intelligence Agricole</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* -------------------------
-       Agri-Intel 360 - Stylesheet
-       Version: 5.0 (Enhanced Dashboard)
-    -------------------------- */
-
     /* --- DESIGN SYSTEM & VARIABLES --- */
     :root {
       /* Light Mode */
@@ -19,7 +15,7 @@
       --primary-color-dark: #204d22;
       --secondary-color: #ffc107;
       --secondary-dark: #ffa000;
-      --sidebar-bg: #f5f5f5;
+      --accent-color: #2196f3;
       --content-bg: #fafafa;
       --card-bg: #ffffff;
       --text-primary: #1c1c1c;
@@ -30,34 +26,14 @@
       --error-color: #d32f2f;
       --info-color: #1976d2;
 
-      /* Dark Mode */
-      --dark-primary-color: #4caf50;
-      --dark-primary-color-dark: #388e3c;
-      --dark-sidebar-bg: #1b1b1b;
-      --dark-content-bg: #121212;
-      --dark-card-bg: #242424;
-      --dark-text-primary: #e0e0e0;
-      --dark-text-secondary: #a0a0a0;
-      --dark-border-color: #424242;
-
       /* Tokens */
-      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      --border-radius: 12px;
+      --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --border-radius: 16px;
       --border-radius-sm: 8px;
-      --transition-base: 0.25s ease-in-out;
-      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
-    }
-
-    body.dark-mode {
-      --primary-color: var(--dark-primary-color);
-      --primary-color-dark: var(--dark-primary-color-dark);
-      --sidebar-bg: var(--dark-sidebar-bg);
-      --content-bg: var(--dark-content-bg);
-      --card-bg: var(--dark-card-bg);
-      --text-primary: var(--dark-text-primary);
-      --text-secondary: var(--dark-text-secondary);
-      --border-color: var(--dark-border-color);
+      --transition-base: 0.3s ease-in-out;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.2);
     }
 
     /* --- GLOBAL STYLES --- */
@@ -73,315 +49,120 @@
       color: var(--text-primary);
       transition: background-color var(--transition-base), color var(--transition-base);
       line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     /* --- LAYOUT --- */
-    .app-container { 
-      display: flex; 
-      min-height: 100vh; 
-    }
-    
-    .sidebar {
-      width: 260px;
-      background-color: var(--sidebar-bg);
-      border-right: 1px solid var(--border-color);
-      height: 100vh;
-      position: fixed;
-      padding: 1.5rem;
-      transition: all var(--transition-base);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      z-index: 100;
-    }
-    
-    .main-content {
-      margin-left: 260px;
-      width: calc(100% - 260px);
-      padding: 2rem;
-      transition: margin-left var(--transition-base);
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
     }
 
-    /* --- COMPONENTS --- */
-    .sidebar-header {
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-      margin-bottom: 1.5rem;
+    /* --- HEADER & NAVIGATION --- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      z-index: 1000;
+      padding: 1rem 0;
+      transition: var(--transition-base);
     }
-    
-    .sidebar-header .logo {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--primary-color);
+
+    header.scrolled {
+      padding: 0.75rem 0;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
       display: flex;
       align-items: center;
       gap: 10px;
+      text-decoration: none;
     }
-    
+
     .logo-icon {
       background: var(--primary-color);
       color: white;
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-
-    .main-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-    
-    .main-nav .nav-link {
-      display: flex;
-      align-items: center;
-      padding: 0.8rem 1rem;
-      border-radius: var(--border-radius);
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-weight: 500;
-      transition: all var(--transition-base);
-    }
-    
-    .main-nav .nav-link:hover {
-      background-color: var(--border-color);
-      color: var(--text-primary);
-    }
-    
-    .main-nav .nav-link.active {
-      background-color: var(--primary-color);
-      color: #fff;
-      font-weight: 600;
-    }
-    
-    .main-nav .nav-link i {
-      width: 20px;
-      margin-right: 1rem;
-      color: inherit;
-    }
-
-    .theme-switch {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.8rem 1rem;
-      border-radius: var(--border-radius);
-      background-color: var(--border-color);
-      margin-top: 1rem;
-      cursor: pointer;
-    }
-    
-    .theme-switch span {
-      font-size: 0.9rem;
-    }
-
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      padding: 1rem 1.5rem;
-      background-color: var(--card-bg);
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
-    }
-    
-    .page-title {
-      font-size: 1.8rem;
       font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .page-title i {
-      color: var(--primary-color);
-    }
-
-    .card {
-      background-color: var(--card-bg);
-      border-radius: var(--border-radius);
-      border: 1px solid var(--border-color);
-      padding: 1.5rem;
-      transition: all var(--transition-base);
-      margin-bottom: 1.5rem;
-      box-shadow: var(--shadow);
-    }
-    
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-hover);
-    }
-    
-    .card-header {
-      padding-bottom: 1rem;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .card-title {
       font-size: 1.2rem;
-      font-weight: 600;
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .card-actions {
-      display: flex;
-      gap: 10px;
     }
 
-    /* Grid Layout */
-    .grid {
-      display: grid;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    
-    .grid-3 {
-      grid-template-columns: repeat(3, 1fr);
-    }
-    
-    .grid-2 {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    /* Stats Cards */
-    .stat-card {
-      text-align: center;
-      padding: 1.5rem;
-    }
-    
-    .stat-value {
-      font-size: 2.5rem;
+    .logo-text {
+      font-size: 1.5rem;
       font-weight: 700;
-      margin: 0.5rem 0;
       color: var(--primary-color);
     }
-    
-    .stat-unit {
-      font-size: 1rem;
-      color: var(--text-secondary);
-      font-weight: 400;
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
     }
-    
-    .stat-comparison {
-      display: inline-block;
-      padding: 0.35rem 0.75rem;
-      border-radius: 50px;
-      font-size: 0.85rem;
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-primary);
       font-weight: 500;
-      margin-top: 0.5rem;
-    }
-    
-    .stat-positive {
-      background-color: rgba(56, 142, 60, 0.1);
-      color: var(--success-color);
-    }
-    
-    .stat-negative {
-      background-color: rgba(211, 47, 47, 0.1);
-      color: var(--error-color);
-    }
-    
-    .stat-neutral {
-      background-color: rgba(255, 193, 7, 0.1);
-      color: var(--warning-color);
-    }
-
-    /* Charts */
-    .chart-container {
-      width: 100%;
-      height: 250px;
-      margin-top: 1rem;
       position: relative;
-    }
-    
-    .chart-placeholder {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-      border-radius: var(--border-radius-sm);
-    }
-    
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    /* Alert & Activity Lists */
-    .alert-list, .activity-list {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-    
-    .alert-item, .activity-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      padding: 1rem;
-      border-radius: var(--border-radius-sm);
-      background-color: var(--sidebar-bg);
       transition: var(--transition-base);
     }
-    
-    .alert-item:hover, .activity-item:hover {
-      background-color: var(--border-color);
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-color);
+      transition: var(--transition-base);
     }
-    
-    .alert-icon, .activity-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    
-    .alert-warning {
-      background-color: rgba(255, 193, 7, 0.1);
-      color: var(--warning-color);
-    }
-    
-    .alert-info {
-      background-color: rgba(33, 150, 243, 0.1);
-      color: var(--info-color);
-    }
-    
-    .activity-icon {
-      background-color: rgba(76, 175, 80, 0.1);
+
+    .nav-link:hover {
       color: var(--primary-color);
     }
-    
-    .alert-content, .activity-content {
-      flex: 1;
+
+    .nav-link:hover::after {
+      width: 100%;
     }
-    
-    .alert-title, .activity-title {
-      font-weight: 600;
-      margin-bottom: 0.25rem;
+
+    .nav-link.active {
+      color: var(--primary-color);
     }
-    
-    .alert-description, .activity-time {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
+
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
     }
 
     /* Buttons */
     .btn {
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1.5rem;
       border: none;
       border-radius: var(--border-radius-sm);
       cursor: pointer;
@@ -391,490 +172,1063 @@
       align-items: center;
       gap: 0.5rem;
       transition: var(--transition-base);
+      text-decoration: none;
     }
     
     .btn-primary {
       background-color: var(--primary-color);
       color: white;
+      box-shadow: 0 4px 14px rgba(44, 107, 47, 0.4);
     }
     
     .btn-primary:hover {
       background-color: var(--primary-color-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(44, 107, 47, 0.5);
     }
     
     .btn-secondary {
       background-color: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
     }
     
     .btn-secondary:hover {
-      background-color: var(--border-color);
-    }
-    
-    .btn-sm {
-      padding: 0.35rem 0.75rem;
-      font-size: 0.85rem;
-    }
-    
-    .btn-outline {
-      background-color: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-primary);
-    }
-    
-    .btn-outline:hover {
-      background-color: var(--border-color);
+      background-color: rgba(44, 107, 47, 0.1);
+      transform: translateY(-2px);
     }
 
-    /* --- USER PROFILE --- */
-    .user-profile-container {
+    .btn-lg {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      padding: 10rem 0 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .hero-content {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+    }
+
+    .hero-title span {
+      color: var(--primary-color);
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-image {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 1s ease;
+    }
+
+    .hero:hover .hero-image img {
+      transform: scale(1.05);
+    }
+
+    /* FEATURES SECTION */
+    .section {
+      padding: 5rem 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .section-title p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      transition: var(--transition-base);
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+      background: rgba(44, 107, 47, 0.1);
+      color: var(--primary-color);
+    }
+
+    .feature-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .feature-description {
+      color: var(--text-secondary);
+    }
+
+    /* HOW IT WORKS SECTION */
+    .how-it-works {
+      background: linear-gradient(135deg, rgba(44, 107, 47, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
       position: relative;
     }
-    
-    .user-profile {
+
+    .steps {
       display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      cursor: pointer;
-      padding: 0.5rem 1rem;
-      border-radius: var(--border-radius);
-      transition: var(--transition-base);
-    }
-    
-    .user-profile:hover {
-      background-color: var(--border-color);
-    }
-    
-    .user-profile img {
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      object-fit: cover;
-    }
-    
-    .dropdown-menu {
-      position: absolute;
-      right: 0;
-      top: 110%;
-      background: var(--card-bg);
-      border: 1px solid var(--border-color);
-      border-radius: var(--border-radius);
-      padding: 0.5rem 0;
-      list-style: none;
-      margin: 0;
-      width: 200px;
-      box-shadow: var(--shadow-hover);
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(10px);
-      transition: var(--transition-base);
-    }
-    
-    .dropdown-menu li {
-      padding: 0.5rem 1rem;
-    }
-    
-    .dropdown-menu li a {
-      text-decoration: none;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      transition: var(--transition-base);
-    }
-    
-    .dropdown-menu li:hover {
-      background-color: var(--border-color);
-    }
-    
-    .dropdown-divider {
-      height: 1px;
-      background: var(--border-color);
-      margin: 0.5rem 0;
+      justify-content: space-between;
+      position: relative;
+      margin: 4rem 0;
     }
 
-    .user-profile-container.active .dropdown-menu {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, var(--primary-color-light), var(--primary-color-dark));
+      z-index: 1;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+
+    .step-number {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-color);
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 20px rgba(44, 107, 47, 0.3);
+    }
+
+    .step-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .step-description {
+      color: var(--text-secondary);
+      max-width: 250px;
+    }
+
+    /* TESTIMONIALS SECTION */
+    .testimonials-container {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .testimonials {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .testimonial {
+      min-width: 100%;
+      padding: 2rem;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .testimonial-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 1.5rem;
+      border: 4px solid var(--primary-color-light);
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .testimonial-author {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .testimonial-role {
+      color: var(--primary-color);
+      font-size: 0.9rem;
+    }
+
+    .testimonial-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .testimonial-control {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--border-color);
+      cursor: pointer;
+      transition: var(--transition-base);
+    }
+
+    .testimonial-control.active {
+      background: var(--primary-color);
+      transform: scale(1.2);
+    }
+
+    /* CTA SECTION */
+    .cta {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+      color: white;
+      text-align: center;
+      padding: 6rem 0;
+      border-radius: var(--border-radius);
+      margin: 4rem 0;
+    }
+
+    .cta-title {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-button {
+      background: white;
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .cta-button:hover {
+      background: rgba(255, 255, 255, 0.9);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--text-primary);
+      color: white;
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .footer-logo-icon {
+      background: white;
+      color: var(--primary-color);
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .footer-logo-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .footer-description {
+      opacity: 0.8;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      transition: var(--transition-base);
+    }
+
+    .social-link:hover {
+      background: var(--primary-color);
+      transform: translateY(-3px);
+    }
+
+    .footer-title {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    .footer-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--primary-color);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: var(--transition-base);
+    }
+
+    .footer-links a:hover {
+      color: white;
+      padding-left: 5px;
+    }
+
+    .footer-newsletter p {
+      opacity: 0.8;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      font-family: inherit;
+    }
+
+    .newsletter-input:focus {
+      outline: 2px solid var(--primary-color);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .animate-fadeIn {
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
     }
 
     /* Responsive */
-    @media (max-width: 1200px) {
-      .grid-3 {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    
     @media (max-width: 992px) {
-      .sidebar {
-        width: 80px;
-        padding: 1rem 0.5rem;
+      .hero-title {
+        font-size: 2.8rem;
       }
       
-      .sidebar-header .logo span {
+      .hero-container {
+        flex-direction: column;
+      }
+      
+      .hero-image {
+        width: 100%;
+        margin-top: 3rem;
+      }
+      
+      .steps {
+        flex-direction: column;
+        gap: 2rem;
+      }
+      
+      .steps::before {
         display: none;
-      }
-      
-      .main-nav .nav-link span {
-        display: none;
-      }
-      
-      .main-nav .nav-link i {
-        margin-right: 0;
-      }
-      
-      .theme-switch span {
-        display: none;
-      }
-      
-      .main-content {
-        margin-left: 80px;
-        width: calc(100% - 80px);
-        padding: 1.5rem;
-      }
-      
-      .grid-3, .grid-2 {
-        grid-template-columns: 1fr;
       }
     }
     
     @media (max-width: 768px) {
-      .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-        flex-direction: row;
-        align-items: center;
-        padding: 1rem;
+      .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: white;
+        flex-direction: column;
+        padding: 6rem 2rem 2rem;
+        box-shadow: var(--shadow-lg);
+        transition: right 0.3s ease;
+        z-index: 999;
       }
       
-      .sidebar-header {
-        padding-bottom: 0;
-        border-bottom: none;
-        margin-bottom: 0;
-        margin-right: 1rem;
+      .nav-menu.active {
+        right: 0;
       }
       
-      .main-nav {
-        flex-direction: row;
-        gap: 0.25rem;
+      .hero-title {
+        font-size: 2.2rem;
       }
       
-      .main-nav .nav-link {
-        padding: 0.5rem;
-      }
-      
-      .theme-switch {
-        margin-top: 0;
-        margin-left: auto;
-      }
-      
-      .main-content {
-        margin-left: 0;
-        width: 100%;
-      }
-      
-      .top-bar {
+      .hero-buttons {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1rem;
       }
       
-      .user-profile-container {
-        width: 100%;
-      }
-      
-      .user-profile {
-        width: 100%;
-        justify-content: flex-end;
-      }
-      
-      .stat-value {
+      .section-title h2 {
         font-size: 2rem;
       }
+      
+      .feature-card {
+        padding: 1.5rem;
+      }
+      
+      .testimonial {
+        padding: 1.5rem;
+      }
+      
+      .newsletter-form {
+        flex-direction: column;
+      }
+
+      .auth-buttons {
+        display: none;
+      }
+    }
+
+    /* Mobile menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .mobile-auth-buttons {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .mobile-auth-buttons {
+        display: flex;
+      }
+    }
+
+    .close-menu {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="app-container">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div>
-        <div class="sidebar-header">
-          <h1 class="logo">
-            <span class="logo-icon">AI</span>
-            <span>Agri-Intel 360</span>
-          </h1>
+  <!-- Header -->
+  <header id="header">
+    <div class="container header-container">
+      <a href="#" class="logo">
+        <span class="logo-icon">AI</span>
+        <span class="logo-text">Agri-Intel 360</span>
+      </a>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <ul class="nav-menu" id="nav-menu">
+        <button class="close-menu" id="close-menu">
+          <i class="fas fa-times"></i>
+        </button>
+        <li><a href="#home" class="nav-link active">Accueil</a></li>
+        <li><a href="#features" class="nav-link">Fonctionnalités</a></li>
+        <li><a href="#pricing" class="nav-link">Tarifs</a></li>
+        <li><a href="#about" class="nav-link">À propos</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        
+        <div class="mobile-auth-buttons">
+          <a href="login.html" class="btn btn-secondary">Se connecter</a>
+          <a href="register.html" class="btn btn-primary">S'inscrire</a>
         </div>
-        <nav class="main-nav">
-          <a href="index.html" class="nav-link active">
-            <i class="fas fa-chart-line"></i>
-            <span>Tableau de Bord</span>
-          </a>
-          <a href="market.html" class="nav-link">
-            <i class="fas fa-chart-bar"></i>
-            <span>Marchés</span>
-          </a>
-          <a href="weather.html" class="nav-link">
-            <i class="fas fa-cloud-sun"></i>
-            <span>Météo</span>
-          </a>
-          <a href="crop-health.html" class="nav-link">
-            <i class="fas fa-seedling"></i>
-            <span>Santé des Cultures</span>
-          </a>
-          <a href="policy.html" class="nav-link">
-            <i class="fas fa-file-alt"></i>
-            <span>Politiques</span>
-          </a>
-          <a href="forum.html" class="nav-link">
-            <i class="fas fa-comments"></i>
-            <span>Forum</span>
-          </a>
-          <a href="subscription.html" class="nav-link">
-            <i class="fas fa-star"></i>
-            <span>Abonnement</span>
-          </a>
-        </nav>
+      </ul>
+      
+      <div class="auth-buttons">
+        <a href="login.html" class="btn btn-secondary">Se connecter</a>
+        <a href="register.html" class="btn btn-primary">S'inscrire</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-container">
+        <div class="hero-content animate-fadeIn">
+          <h1 class="hero-title">Transformez votre agriculture avec l'<span>intelligence artificielle</span></h1>
+          <p class="hero-subtitle">Agri-Intel 360 est la plateforme tout-en-un qui révolutionne la gestion agricole grâce à l'analyse de données, l'IA prédictive et des outils collaboratifs.</p>
+          <div class="hero-buttons">
+            <a href="register.html" class="btn btn-primary btn-lg">Commencer gratuitement</a>
+            <a href="#features" class="btn btn-secondary btn-lg">Découvrir les fonctionnalités</a>
+          </div>
+        </div>
+        
+        <div class="hero-image animate-float">
+          <img src="https://wallpaper.forfun.com/fetch/e5/e5a5ffd38f1a154646797d5d834da985.jpeg" alt="Dashboard Agri-Intel 360">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-title">
+        <h2>Une plateforme complète pour les agriculteurs modernes</h2>
+        <p>Découvrez toutes les fonctionnalités conçues pour optimiser votre exploitation et maximiser vos rendements</p>
       </div>
       
-      <div class="theme-switch" id="theme-switch">
-        <span>Mode sombre</span>
-        <i class="fas fa-moon"></i>
-      </div>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="main-content">
-      <header class="top-bar">
-        <h2 class="page-title">
-          <i class="fas fa-chart-line"></i>
-          Tableau de Bord
-        </h2>
-        <div class="user-profile-container" id="user-profile-container">
-          <div class="user-profile" id="user-profile-button">
-            <img src="https://i.pravatar.cc/40?u=agriculteur" alt="Avatar utilisateur">
-            <span>Jean Dupont</span>
-            <i class="fas fa-chevron-down"></i>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
           </div>
-          <ul class="dropdown-menu" id="user-dropdown">
-            <li><a href="profile.html"><i class="fas fa-user"></i>Mon Profil</a></li>
-            <li><a href="settings.html"><i class="fas fa-cog"></i>Paramètres</a></li>
-            <li><a href="notifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
-            <li class="dropdown-divider"></li>
-            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i>Se Déconnecter</a></li>
+          <h3 class="feature-title">Analyses de marché</h3>
+          <p class="feature-description">Suivez les tendances des prix, anticipez les fluctuations du marché et prenez des décisions éclairées pour maximiser votre rentabilité.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-cloud-sun"></i>
+          </div>
+          <h3 class="feature-title">Météo intelligente</h3>
+          <p class="feature-description">Recevez des prévisions hyperlocales et des alertes personnalisées pour protéger vos cultures et optimiser vos planning de travail.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-seedling"></i>
+          </div>
+          <h3 class="feature-title">Santé des cultures</h3>
+          <p class="feature-description">Diagnostiquez les maladies et carences de vos plantes grâce à notre IA de reconnaissance d'images et recevez des recommandations de traitement.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <h3 class="feature-title">Forum communautaire</h3>
+          <p class="feature-description">Échangez avec d'autres agriculteurs, partagez vos expériences et obtenez des conseils personnalisés de la communauté.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <h3 class="feature-title">Politiques agricoles</h3>
+          <p class="feature-description">Simulez l'impact des politiques agricoles sur votre exploitation et identifiez les subventions auxquelles vous avez droit.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3 class="feature-title">Application mobile</h3>
+          <p class="feature-description">Accédez à toutes les fonctionnalités depuis votre smartphone, même hors connexion dans vos champs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="section how-it-works">
+    <div class="container">
+      <div class="section-title">
+        <h2>Comment ça marche</h2>
+        <p>Agri-Intel 360 transforme vos données en insights actionnables en seulement quelques étapes simples</p>
+      </div>
+      
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h4 class="step-title">Inscription</h4>
+          <p class="step-description">Créez votre compte et configurez votre exploitation en quelques minutes</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">2</div>
+          <h4 class="step-title">Collecte de données</h4>
+          <p class="step-description">Importez vos données ou connectez vos capteurs IoT pour une analyse complète</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">3</div>
+          <h4 class="step-title">Analyse IA</h4>
+          <p class="step-description">Notre intelligence artificielle traite vos données pour générer des insights précieux</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">4</div>
+          <h4 class="step-title">Recommandations</h4>
+          <p class="step-description">Recevez des recommandations personnalisées pour optimiser votre exploitation</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-title">
+        <h2>Nos Tarifs</h2>
+        <p>Choisissez l'offre qui correspond le mieux à vos besoins</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-seedling"></i>
+          </div>
+          <h3 class="feature-title">Starter</h3>
+          <p class="feature-description">Parfait pour les petites exploitations</p>
+          <p class="feature-description"><strong>19€/mois</strong></p>
+          <a href="register.html" class="btn btn-primary">Choisir</a>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-tree"></i>
+          </div>
+          <h3 class="feature-title">Pro</h3>
+          <p class="feature-description">Idéal pour les exploitations moyennes</p>
+          <p class="feature-description"><strong>49€/mois</strong></p>
+          <a href="register.html" class="btn btn-primary">Choisir</a>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-tractor"></i>
+          </div>
+          <h3 class="feature-title">Enterprise</h3>
+          <p class="feature-description">Pour les grandes exploitations</p>
+          <p class="feature-description"><strong>99€/mois</strong></p>
+          <a href="register.html" class="btn btn-primary">Choisir</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-title">
+        <h2>À propos de nous</h2>
+        <p>Découvrez l'équipe derrière Agri-Intel 360</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <h3 class="feature-title">Notre mission</h3>
+          <p class="feature-description">Révolutionner l'agriculture grâce à l'intelligence artificielle et l'analyse de données pour une production plus durable et rentable.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 class="feature-title">Notre équipe</h3>
+          <p class="feature-description">Une équipe passionnée d'agronomes, data scientists et développeurs dédiés à l'innovation agricole.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-history"></i>
+          </div>
+          <h3 class="feature-title">Notre histoire</h3>
+          <p class="feature-description">Fondée en 2025, Agri-Intel 360 aide déjà plus de 5000 agriculteurs à travers la France à optimiser leurs exploitations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Ils nous font confiance</h2>
+        <p>Découvrez les témoignages des agriculteurs qui ont transformé leur exploitation avec Agri-Intel 360</p>
+      </div>
+      
+      <div class="testimonials-container">
+        <div class="testimonials" id="testimonials">
+          <div class="testimonial">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="Pierre Dubois" class="testimonial-avatar">
+            <p class="testimonial-text">"Grâce aux analyses prédictives d'Agri-Intel 360, j'ai pu anticiper une baisse des prix du blé et ajuster ma stratégie de vente. Résultat : +15% de marge sur l'année !"</p>
+            <div class="testimonial-author">Pierre Dubois</div>
+            <div class="testimonial-role">Céréalier en Normandie</div>
+          </div>
+        </div>
+        
+        <div class="testimonial-controls">
+          <div class="testimonial-control active"></div>
+          <div class="testimonial-control"></div>
+          <div class="testimonial-control"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-title">
+        <h2>Contactez-nous</h2>
+        <p>Nous sommes à votre écoute pour toutes vos questions</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <h3 class="feature-title">Email</h3>
+            <p class="feature-description">contact@agri-intel360.fr</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <h3 class="feature-title">Téléphone</h3>
+            <p class="feature-description">+33 1 23 45 67 89</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <h3 class="feature-title">Adresse</h3>
+            <p class="feature-description">123 Rue de l'Agriculture, 75000 Paris</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section">
+    <div class="container">
+      <div class="cta">
+        <h2 class="cta-title">Prêt à révolutionner votre exploitation agricole ?</h2>
+        <p class="cta-subtitle">Rejoignez des milliers d'agriculteurs qui utilisent déjà Agri-Intel 360 pour optimiser leurs rendements et maximiser leurs profits.</p>
+        <a href="register.html" class="btn btn-lg cta-button">Commencer gratuitement</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <span class="footer-logo-icon">AI</span>
+            <span class="footer-logo-text">Agri-Intel 360</span>
+          </div>
+          <p class="footer-description">La plateforme d'intelligence agricole qui transforme vos données en décisions rentables.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="footer-title">Liens rapides</h3>
+          <ul class="footer-links">
+            <li><a href="#home">Accueil</a></li>
+            <li><a href="#features">Fonctionnalités</a></li>
+            <li><a href="#pricing">Tarifs</a></li>
+            <li><a href="#about">À propos</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
-      </header>
-
-      <div class="page-content">
-        <!-- Stats Overview -->
-        <div class="grid grid-3">
-          <div class="card stat-card">
-            <div class="card-header">
-              <h3 class="card-title">
-                <i class="fas fa-wheat"></i>
-                Rendement (Blé)
-              </h3>
-            </div>
-            <p class="text-secondary">Moyenne sur vos parcelles</p>
-            <p class="stat-value">8.2 <span class="stat-unit">t/ha</span></p>
-            <div class="stat-comparison stat-positive">
-              <i class="fas fa-arrow-up"></i> +5% vs l'an dernier
-            </div>
-          </div>
-
-          <div class="card stat-card">
-            <div class="card-header">
-              <h3 class="card-title">
-                <i class="fas fa-euro-sign"></i>
-                Marge Nette
-              </h3>
-            </div>
-            <p class="text-secondary">Moyenne par tonne</p>
-            <p class="stat-value">71.30 <span class="stat-unit">€/t</span></p>
-            <div class="stat-comparison stat-neutral">
-              <i class="fas fa-minus"></i> Stable
-            </div>
-          </div>
-
-          <div class="card stat-card">
-            <div class="card-header">
-              <h3 class="card-title">
-                <i class="fas fa-money-bill-wave"></i>
-                Dépenses
-              </h3>
-            </div>
-            <p class="text-secondary">Mois en cours</p>
-            <p class="stat-value">3,245 <span class="stat-unit">€</span></p>
-            <div class="stat-comparison stat-negative">
-              <i class="fas fa-arrow-up"></i> +12% vs budget
-            </div>
-          </div>
+        
+        <div>
+          <h3 class="footer-title">Support</h3>
+          <ul class="footer-links">
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Centre d'aide</a></li>
+            <li><a href="#">Tutoriels</a></li>
+            <li><a href="#">Politique de confidentialité</a></li>
+            <li><a href="#">Conditions d'utilisation</a></li>
+          </ul>
         </div>
-
-        <!-- Charts -->
-        <div class="card">
-          <div class="card-header">
-            <h3 class="card-title">
-              <i class="fas fa-chart-bar"></i>
-              Prévisions de Marge (€/ha)
-            </h3>
-            <div class="card-actions">
-              <button class="btn btn-sm btn-outline">
-                <i class="fas fa-download"></i>
-                Exporter
-              </button>
-            </div>
-          </div>
-          <div class="chart-container">
-            <div class="chart-placeholder"></div>
-          </div>
-        </div>
-
-        <!-- Alerts & Activities -->
-        <div class="grid grid-2">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">
-                <i class="fas fa-bell"></i>
-                Alertes Récentes
-              </h3>
-            </div>
-            <div class="alert-list">
-              <div class="alert-item">
-                <div class="alert-icon alert-warning">
-                  <i class="fas fa-exclamation-triangle"></i>
-                </div>
-                <div class="alert-content">
-                  <div class="alert-title">Risque de gel nocturne</div>
-                  <div class="alert-description">Prévision de températures négatives dans 3 jours</div>
-                </div>
-              </div>
-              <div class="alert-item">
-                <div class="alert-icon alert-info">
-                  <i class="fas fa-cloud-rain"></i>
-                </div>
-                <div class="alert-content">
-                  <div class="alert-title">Précipitations attendues</div>
-                  <div class="alert-description">15mm de pluie prévus demain</div>
-                </div>
-              </div>
-              <div class="alert-item">
-                <div class="alert-icon alert-warning">
-                  <i class="fas fa-bug"></i>
-                </div>
-                <div class="alert-content">
-                  <div class="alert-title">Alerte parasites</div>
-                  <div class="alert-description">Présence de pucerons détectée dans le secteur</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">
-                <i class="fas fa-history"></i>
-                Activité Récente
-              </h3>
-            </div>
-            <div class="activity-list">
-              <div class="activity-item">
-                <div class="activity-icon">
-                  <i class="fas fa-file-alt"></i>
-                </div>
-                <div class="activity-content">
-                  <div class="activity-title">Rapport de sol généré</div>
-                  <div class="activity-time">Il y a 2 heures</div>
-                </div>
-              </div>
-              <div class="activity-item">
-                <div class="activity-icon">
-                  <i class="fas fa-seedling"></i>
-                </div>
-                <div class="activity-content">
-                  <div class="activity-title">Analyse de santé des cultures</div>
-                  <div class="activity-time">Hier à 14:32</div>
-                </div>
-              </div>
-              <div class="activity-item">
-                <div class="activity-icon">
-                  <i class="fas fa-tint"></i>
-                </div>
-                <div class="activity-content">
-                  <div class="activity-title">Programme d'irrigation mis à jour</div>
-                  <div class="activity-time">Lundi à 09:15</div>
-                </div>
-              </div>
-            </div>
-          </div>
+        
+        <div>
+          <h3 class="footer-title">Newsletter</h3>
+          <p class="footer-description">Abonnez-vous à notre newsletter pour recevoir les dernières actualités et conseils agricoles.</p>
+          <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Votre email" required>
+            <button type="submit" class="btn btn-primary">S'abonner</button>
+          </form>
         </div>
       </div>
-    </main>
-  </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 Agri-Intel 360. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Gestion du menu utilisateur
-      const profileBtn = document.getElementById("user-profile-button");
-      const profileContainer = document.getElementById("user-profile-container");
-
-      profileBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        profileContainer.classList.toggle("active");
-      });
-
-      document.addEventListener("click", (e) => {
-        if (!profileContainer.contains(e.target)) {
-          profileContainer.classList.remove("active");
-        }
-      });
-
-      // Gestion du thème sombre/clair
-      const themeSwitch = document.getElementById("theme-switch");
-      const themeIcon = themeSwitch.querySelector("i");
-      
-      themeSwitch.addEventListener("click", () => {
-        document.body.classList.toggle("dark-mode");
-        
-        if (document.body.classList.contains("dark-mode")) {
-          themeIcon.classList.remove("fa-moon");
-          themeIcon.classList.add("fa-sun");
-        } else {
-          themeIcon.classList.remove("fa-sun");
-          themeIcon.classList.add("fa-moon");
-        }
-        
-        // Sauvegarder la préférence utilisateur
-        localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
-      });
-
-      // Appliquer le thème sauvegardé
-      const savedTheme = localStorage.getItem("theme");
-      if (savedTheme === "dark") {
-        document.body.classList.add("dark-mode");
-        themeIcon.classList.remove("fa-moon");
-        themeIcon.classList.add("fa-sun");
-      }
-
-      // Simulation de données de graphiques
-      const chartPlaceholders = document.querySelectorAll(".chart-placeholder");
-      chartPlaceholders.forEach(chart => {
-        // Simuler un délai de chargement
-        setTimeout(() => {
-          chart.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary)'><i class='fas fa-chart-bar' style='font-size: 3rem; opacity: 0.3;'></i></div>";
-        }, 1000);
-      });
-
-      // Initialiser les graphiques (simulation)
-      setTimeout(() => {
-        console.log("Graphiques initialisés");
-      }, 1500);
+    // Navigation menu functionality
+    const header = document.getElementById('header');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const closeMenuBtn = document.getElementById('close-menu');
+    const navMenu = document.getElementById('nav-menu');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    // Toggle mobile menu
+    mobileMenuBtn.addEventListener('click', () => {
+      navMenu.classList.add('active');
+      document.body.style.overflow = 'hidden';
     });
+    
+    closeMenuBtn.addEventListener('click', () => {
+      navMenu.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    });
+    
+    // Close menu when clicking on a link
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        
+        // Update active link
+        navLinks.forEach(item => item.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+    
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          const headerHeight = header.offsetHeight;
+          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+          
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+    
+    // Testimonial slider (simplified version)
+    const testimonialControls = document.querySelectorAll('.testimonial-control');
+    
+    testimonialControls.forEach((control, index) => {
+      control.addEventListener('click', () => {
+        testimonialControls.forEach(c => c.classList.remove('active'));
+        control.classList.add('active');
+        
+        // In a real implementation, this would switch the testimonial content
+        console.log(`Switching to testimonial ${index + 1}`);
+      });
+    });
+    
+    // Animation on scroll
+    const animateOnScroll = () => {
+      const elements = document.querySelectorAll('.feature-card, .step, .section-title');
+      
+      elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.3;
+        
+        if (elementPosition < screenPosition) {
+          element.style.opacity = 1;
+          element.style.transform = 'translateY(0)';
+        }
+      });
+    };
+    
+    // Initialize animation styles
+    document.querySelectorAll('.feature-card, .step').forEach(element => {
+      element.style.opacity = 0;
+      element.style.transform = 'translateY(20px)';
+      element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    });
+    
+    window.addEventListener('scroll', animateOnScroll);
+    // Trigger once on load
+    window.addEventListener('load', animateOnScroll);
   </script>
 </body>
 </html>
