@@ -1,0 +1,687 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discussion - Forum Agri-Intel 360</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Styles spécifiques à la page de discussion */
+    .thread-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .thread-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    
+    .thread-author {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .thread-author img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .thread-stats {
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .thread-stat {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    
+    .thread-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .posts-list {
+      margin-bottom: 2rem;
+    }
+    
+    .post {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: all var(--transition-base);
+    }
+    
+    .post:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    
+    .post-author {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .post-author img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    
+    .author-info {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .author-name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .author-role {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+    
+    .post-meta {
+      text-align: right;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    
+    .post-time {
+      display: block;
+      margin-bottom: 0.25rem;
+    }
+    
+    .post-content {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+    
+    .post-content p {
+      margin-bottom: 1rem;
+    }
+    
+    .post-content p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .post-actions {
+      display: flex;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .post-action {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--border-radius-sm);
+      transition: all var(--transition-base);
+      font-size: 0.9rem;
+    }
+    
+    .post-action:hover {
+      background: var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    .post-action.liked {
+      color: var(--danger-color);
+    }
+    
+    .reply-form {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .reply-form h4 {
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+    
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    
+    .editor-toolbar {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      padding: 0.5rem;
+      background: var(--sidebar-bg);
+      border-radius: var(--border-radius-sm);
+    }
+    
+    .editor-btn {
+      background: none;
+      border: none;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      transition: background var(--transition-base);
+    }
+    
+    .editor-btn:hover {
+      background: var(--border-color);
+    }
+    
+    .tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    
+    .tag-agriculture {
+      background: rgba(44, 107, 47, 0.15);
+      color: var(--primary-color);
+    }
+    
+    .tag-weather {
+      background: rgba(33, 150, 243, 0.15);
+      color: var(--info-color);
+    }
+    
+    .tag-irrigation {
+      background: rgba(0, 188, 212, 0.15);
+      color: #00bcd4;
+    }
+    
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    .breadcrumb a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .thread-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .thread-meta {
+        flex-wrap: wrap;
+      }
+      
+      .post-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .post-meta {
+        text-align: left;
+      }
+      
+      .post-actions {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h1 class="logo">AI-360</h1>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">
+          <i>📊</i>
+          <span>Tableau de Bord</span>
+        </a>
+        <a href="market.html" class="nav-link">
+          <i>📈</i>
+          <span>Marchés</span>
+        </a>
+        <a href="weather.html" class="nav-link">
+          <i>🌦️</i>
+          <span>Météo</span>
+        </a>
+        <a href="crop-health.html" class="nav-link">
+          <i>🌱</i>
+          <span>Santé des Cultures</span>
+        </a>
+        <a href="policy.html" class="nav-link">
+          <i>📜</i>
+          <span>Politiques</span>
+        </a>
+        <a href="forum.html" class="nav-link active">
+          <i>💬</i>
+          <span>Forum</span>
+        </a>
+        <a href="subscription.html" class="nav-link">
+          <i>⭐</i>
+          <span>Abonnement</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <h2 class="page-title">
+          <i>💬</i>
+          Discussion
+        </h2>
+        <div class="top-bar-actions">
+          <button class="dark-mode-toggle" id="dark-mode-toggle">🌙</button>
+          <div class="user-profile-container">
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/40?u=agriculteur" alt="Avatar utilisateur">
+              <span>Jean Dupont</span>
+            </div>
+            <ul class="dropdown-menu">
+              <li><a href="settings.html"><i>⚙️</i> Paramètres</a></li>
+              <li class="dropdown-divider"></li>
+              <li><a href="login.html"><i>🚪</i> Se Déconnecter</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <div class="breadcrumb">
+          <a href="forum.html">Forum</a>
+          <span>›</span>
+          <a href="forum.html">Agriculture</a>
+          <span>›</span>
+          <span>Discussion</span>
+        </div>
+
+        <div class="card">
+          <div class="thread-header">
+            <div>
+              <h3 class="card-title">Comment optimiser l'irrigation des champs de maïs ?</h3>
+              <div class="thread-meta">
+                <div class="thread-author">
+                  <img src="https://i.pravatar.cc/40?u=utilisateur1" alt="Alice">
+                  <span>Alice</span>
+                </div>
+                <span>•</span>
+                <span>Posté il y a 2 heures</span>
+                <span>•</span>
+                <span class="tag tag-agriculture">Agriculture</span>
+                <span class="tag tag-irrigation">Irrigation</span>
+              </div>
+            </div>
+            <div class="thread-stats">
+              <div class="thread-stat">
+                <i>👁️</i>
+                <span>145 vues</span>
+              </div>
+              <div class="thread-stat">
+                <i>💬</i>
+                <span>12 réponses</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="post-content">
+            <p>Bonjour à tous,</p>
+            
+            <p>Je cultive du maïs sur 50 hectares dans la région Centre et je cherche à optimiser mon système d'irrigation. Avec les sécheresses récurrentes, je dois maximiser l'efficacité de l'eau tout en maintenant un bon rendement.</p>
+            
+            <p>J'utilise actuellement un système goutte-à-goutte, mais je me demande si c'est la meilleure solution. Certains voisins utilisent l'aspersion et semblent avoir de bons résultats.</p>
+            
+            <p>Quelles sont vos expériences ? Avez-vous testé différents systèmes ? Comment gérez-vous le calendrier d'irrigation en fonction de la météo ?</p>
+            
+            <p>Merci pour vos conseils !</p>
+          </div>
+
+          <div class="thread-actions">
+            <button class="btn btn-outline">
+              <i>👍</i>
+              <span>Utile (24)</span>
+            </button>
+            <button class="btn btn-outline">
+              <i>🔖</i>
+              <span>Suivre</span>
+            </button>
+            <button class="btn btn-outline">
+              <i>↗️</i>
+              <span>Partager</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="posts-list">
+          <div class="post">
+            <div class="post-header">
+              <div class="post-author">
+                <img src="https://i.pravatar.cc/40?u=agriculteur2" alt="Marc">
+                <div class="author-info">
+                  <span class="author-name">Marc</span>
+                  <span class="author-role">Agriculteur céréalier</span>
+                </div>
+              </div>
+              <div class="post-meta">
+                <span class="post-time">Il y a 1 heure</span>
+                <span>#1</span>
+              </div>
+            </div>
+            
+            <div class="post-content">
+              <p>Bonjour Alice,</p>
+              
+              <p>J'utilise l'aspersion sur mes 80 hectares de maïs en Normandie. Le principal avantage est la couverture uniforme, surtout pour les jeunes plants. Par contre, ça consomme plus d'eau par évaporation.</p>
+              
+              <p>J'ai installé des sondes d'humidité dans le sol qui m'aident à déclencher l'irrigation au bon moment. Je cible généralement 30-40 mm par semaine en période critique.</p>
+              
+              <p>Le goutte-à-goutte est excellent pour l'efficacité, mais l'investissement initial est plus élevé.</p>
+            </div>
+            
+            <div class="post-actions">
+              <button class="post-action">
+                <i>👍</i>
+                <span>12</span>
+              </button>
+              <button class="post-action">
+                <i>💬</i>
+                <span>Répondre</span>
+              </button>
+              <button class="post-action">
+                <i>🔖</i>
+                <span>Signaler</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="post">
+            <div class="post-header">
+              <div class="post-author">
+                <img src="https://i.pravatar.cc/40?u=expert1" alt="Dr. Sophie">
+                <div class="author-info">
+                  <span class="author-name">Dr. Sophie Martin</span>
+                  <span class="author-role">Ingénieure agronome</span>
+                </div>
+              </div>
+              <div class="post-meta">
+                <span class="post-time">Il y a 45 minutes</span>
+                <span>#2</span>
+              </div>
+            </div>
+            
+            <div class="post-content">
+              <p>Bonjour,</p>
+              
+              <p>Votre question tombe à pic ! Voici quelques recommandations basées sur les dernières recherches :</p>
+              
+              <ol>
+                <li><strong>Goutte-à-goutte enterré</strong> : Efficacité jusqu'à 95%, réduit l'évaporation</li>
+                <li><strong>Irrigation de précision</strong> : Utilisez des données sol et météo pour déclencher l'irrigation</li>
+                <li><strong>PAI (Irrigation à taux variable)</strong> : Adaptez les apports en fonction de la variabilité intra-parcellaire</li>
+              </ol>
+              
+              <p>L'INRA recommende un apport de 500-600 mm sur tout le cycle pour le maïs grain en conditions françaises.</p>
+            </div>
+            
+            <div class="post-actions">
+              <button class="post-action liked">
+                <i>👍</i>
+                <span>18</span>
+              </button>
+              <button class="post-action">
+                <i>💬</i>
+                <span>Répondre</span>
+              </button>
+              <button class="post-action">
+                <i>🔖</i>
+                <span>Signaler</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="post">
+            <div class="post-header">
+              <div class="post-author">
+                <img src="https://i.pravatar.cc/40?u=agriculteur3" alt="Pierre">
+                <div class="author-info">
+                  <span class="author-name">Pierre</span>
+                  <span class="author-role">Agriculteur bio</span>
+                </div>
+              </div>
+              <div class="post-meta">
+                <span class="post-time">Il y a 30 minutes</span>
+                <span>#3</span>
+              </div>
+            </div>
+            
+            <div class="post-content">
+              <p>Salut Alice,</p>
+              
+              <p>En bio, j'utilise le goutte-à-goutte avec du paillage. Ça réduit l'évaporation et limite les adventices. Le coût initial est élevé, mais ça se rentabilise en 3-4 ans avec les économies d'eau.</p>
+              
+              <p>J'utilise l'application Agri-Intel pour suivre l'évapotranspiration et adapter mes apports. Très pratique !</p>
+              
+              <p>Attention à la qualité de l'eau si tu utilises le goutte-à-goutte, risque de colmatage.</p>
+            </div>
+            
+            <div class="post-actions">
+              <button class="post-action">
+                <i>👍</i>
+                <span>8</span>
+              </button>
+              <button class="post-action">
+                <i>💬</i>
+                <span>Répondre</span>
+              </button>
+              <button class="post-action">
+                <i>🔖</i>
+                <span>Signaler</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="reply-form">
+          <h4>Ajouter une réponse</h4>
+          
+          <div class="editor-toolbar">
+            <button class="editor-btn" title="Gras"><strong>B</strong></button>
+            <button class="editor-btn" title="Italique"><em>I</em></button>
+            <button class="editor-btn" title="Liste">•</button>
+            <button class="editor-btn" title="Lien">🔗</button>
+            <button class="editor-btn" title="Image">🖼️</button>
+          </div>
+          
+          <textarea class="form-control" rows="6" placeholder="Votre réponse..."></textarea>
+          
+          <div class="form-actions">
+            <button class="btn btn-outline">Annuler</button>
+            <button class="btn btn-primary">Publier la réponse</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Like functionality
+      const likeButtons = document.querySelectorAll('.post-action');
+      likeButtons.forEach(button => {
+        if (button.innerHTML.includes('👍')) {
+          button.addEventListener('click', function() {
+            const countElement = this.querySelector('span');
+            let count = parseInt(countElement.textContent);
+            
+            if (this.classList.contains('liked')) {
+              count--;
+              this.classList.remove('liked');
+            } else {
+              count++;
+              this.classList.add('liked');
+            }
+            
+            countElement.textContent = count;
+          });
+        }
+      });
+      
+      // Reply to specific post
+      const replyButtons = document.querySelectorAll('.post-action');
+      replyButtons.forEach(button => {
+        if (button.innerHTML.includes('Répondre')) {
+          button.addEventListener('click', function() {
+            const post = this.closest('.post');
+            const author = post.querySelector('.author-name').textContent;
+            const textarea = document.querySelector('.reply-form textarea');
+            
+            textarea.value = `@${author} `;
+            textarea.focus();
+            
+            // Scroll to reply form
+            document.querySelector('.reply-form').scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'center'
+            });
+          });
+        }
+      });
+      
+      // Form submission
+      const replyForm = document.querySelector('.reply-form');
+      const replyButton = replyForm.querySelector('.btn-primary');
+      const replyTextarea = replyForm.querySelector('textarea');
+      
+      replyButton.addEventListener('click', function() {
+        if (replyTextarea.value.trim().length < 10) {
+          alert('Votre réponse doit contenir au moins 10 caractères.');
+          return;
+        }
+        
+        // Simulate posting
+        this.textContent = 'Publication...';
+        this.disabled = true;
+        
+        setTimeout(() => {
+          // Add new post to the list
+          const newPost = document.createElement('div');
+          newPost.className = 'post';
+          newPost.innerHTML = `
+            <div class="post-header">
+              <div class="post-author">
+                <img src="https://i.pravatar.cc/40?u=agriculteur" alt="Vous">
+                <div class="author-info">
+                  <span class="author-name">Jean Dupont</span>
+                  <span class="author-role">Vous</span>
+                </div>
+              </div>
+              <div class="post-meta">
+                <span class="post-time">À l'instant</span>
+                <span>#4</span>
+              </div>
+            </div>
+            
+            <div class="post-content">
+              <p>${replyTextarea.value}</p>
+            </div>
+            
+            <div class="post-actions">
+              <button class="post-action">
+                <i>👍</i>
+                <span>0</span>
+              </button>
+              <button class="post-action">
+                <i>💬</i>
+                <span>Répondre</span>
+              </button>
+              <button class="post-action">
+                <i>🔖</i>
+                <span>Signaler</span>
+              </button>
+            </div>
+          `;
+          
+          document.querySelector('.posts-list').appendChild(newPost);
+          
+          // Reset form
+          replyTextarea.value = '';
+          this.textContent = 'Publier la réponse';
+          this.disabled = false;
+          
+          // Add event listeners to new post
+          const newLikeButton = newPost.querySelector('.post-action');
+          newLikeButton.addEventListener('click', function() {
+            const countElement = this.querySelector('span');
+            let count = parseInt(countElement.textContent);
+            
+            if (this.classList.contains('liked')) {
+              count--;
+              this.classList.remove('liked');
+            } else {
+              count++;
+              this.classList.add('liked');
+            }
+            
+            countElement.textContent = count;
+          });
+          
+          // Update thread stats
+          const replyCount = document.querySelector('.thread-stat:last-child span');
+          replyCount.textContent = (parseInt(replyCount.textContent) + 1) + ' réponses';
+          
+          alert('Votre réponse a été publiée avec succès !');
+        }, 1000);
+      });
+    });
+  </script>
+</body>
+</html>

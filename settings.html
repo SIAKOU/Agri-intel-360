@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paramètres - Agri-Intel 360</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* -------------------------
+       Agri-Intel 360 - Stylesheet
+       Version: 5.1 (Enhanced Settings)
+    -------------------------- */
+
+    /* --- DESIGN SYSTEM & VARIABLES --- */
+    :root {
+      /* Light Mode */
+      --primary-color: #2c6b2f;
+      --primary-color-light: #4caf50;
+      --primary-color-dark: #204d22;
+      --secondary-color: #ffc107;
+      --secondary-dark: #ffa000;
+      --sidebar-bg: #f5f5f5;
+      --content-bg: #fafafa;
+      --card-bg: #ffffff;
+      --text-primary: #1c1c1c;
+      --text-secondary: #5a5a5a;
+      --border-color: #e0e0e0;
+      --success-color: #388e3c;
+      --warning-color: #f57c00;
+      --error-color: #d32f2f;
+      --info-color: #1976d2;
+
+      /* Dark Mode */
+      --dark-primary-color: #4caf50;
+      --dark-primary-color-dark: #388e3c;
+      --dark-sidebar-bg: #1b1b1b;
+      --dark-content-bg: #121212;
+      --dark-card-bg: #242424;
+      --dark-text-primary: #e0e0e0;
+      --dark-text-secondary: #a0a0a0;
+      --dark-border-color: #424242;
+
+      /* Tokens */
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --border-radius: 12px;
+      --border-radius-sm: 8px;
+      --transition-base: 0.25s ease-in-out;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    body.dark-mode {
+      --primary-color: var(--dark-primary-color);
+      --primary-color-dark: var(--dark-primary-color-dark);
+      --sidebar-bg: var(--dark-sidebar-bg);
+      --content-bg: var(--dark-content-bg);
+      --card-bg: var(--dark-card-bg);
+      --text-primary: var(--dark-text-primary);
+      --text-secondary: var(--dark-text-secondary);
+      --border-color: var(--dark-border-color);
+    }
+
+    /* --- GLOBAL STYLES --- */
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: var(--font-family);
+      background-color: var(--content-bg);
+      color: var(--text-primary);
+      transition: background-color var(--transition-base), color var(--transition-base);
+      line-height: 1.6;
+    }
+
+    /* --- LAYOUT --- */
+    .app-container { 
+      display: flex; 
+      min-height: 100vh; 
+    }
+    
+    .sidebar {
+      width: 260px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border-color);
+      height: 100vh;
+      position: fixed;
+      padding: 1.5rem;
+      transition: all var(--transition-base);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 100;
+    }
+    
+    .main-content {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      padding: 2rem;
+      transition: margin-left var(--transition-base);
+    }
+
+    /* --- COMPONENTS --- */
+    .sidebar-header {
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+    
+    .sidebar-header .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo-icon {
+      background: var(--primary-color);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .main-nav .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      border-radius: var(--border-radius);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all var(--transition-base);
+    }
+    
+    .main-nav .nav-link:hover {
+      background-color: var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    .main-nav .nav-link.active {
+      background-color: var(--primary-color);
+      color: #fff;
+      font-weight: 600;
+    }
+    
+    .main-nav .nav-link i {
+      width: 20px;
+      margin-right: 1rem;
+      color: inherit;
+    }
+
+    .theme-switch {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      border-radius: var(--border-radius);
+      background-color: var(--border-color);
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    
+    .theme-switch span {
+      font-size: 0.9rem;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 1rem 1.5rem;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+    
+    .page-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .page-title i {
+      color: var(--primary-color);
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      transition: all var(--transition-base);
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .card-header {
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    /* --- USER PROFILE --- */
+    .user-profile-container {
+      position: relative;
+    }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius);
+      transition: var(--transition-base);
+    }
+    
+    .user-profile:hover {
+      background-color: var(--border-color);
+    }
+    
+    .user-profile img {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      right: 0;
+      top: 110%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 0.5rem 0;
+      list-style: none;
+      margin: 0;
+      width: 200px;
+      box-shadow: var(--shadow-hover);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: var(--transition-base);
+    }
+    
+    .dropdown-menu li {
+      padding: 0.5rem 1rem;
+    }
+    
+    .dropdown-menu li a {
+      text-decoration: none;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: var(--transition-base);
+    }
+    
+    .dropdown-menu li:hover {
+      background-color: var(--border-color);
+    }
+    
+    .dropdown-divider {
+      height: 1px;
+      background: var(--border-color);
+      margin: 0.5rem 0;
+    }
+
+    .user-profile-container.active .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition-base);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-color-dark);
+    }
+    
+    .btn-secondary {
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--border-color);
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-danger {
+      background-color: var(--error-color);
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #c62828;
+    }
+    
+    .btn-icon {
+      padding: 0.5rem;
+      border-radius: 50%;
+    }
+
+    /* Form Controls */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .form-control, .form-select {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-sm);
+      background-color: var(--card-bg);
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: all var(--transition-base);
+    }
+    
+    .form-control:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(44, 107, 47, 0.1);
+    }
+    
+    .text-secondary {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    .mb-3 {
+      margin-bottom: 1rem;
+    }
+    
+    .mt-3 {
+      margin-top: 1rem;
+    }
+    
+    .mt-4 {
+      margin-top: 1.5rem;
+    }
+
+    /* --- SETTINGS SPECIFIC STYLES --- */
+    .settings-container {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    .settings-sidebar {
+      width: 250px;
+      flex-shrink: 0;
+    }
+    
+    .settings-tabs {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    
+    .settings-tab-link {
+      display: flex;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border-color);
+      transition: all var(--transition-base);
+    }
+    
+    .settings-tab-link:last-child {
+      border-bottom: none;
+    }
+    
+    .settings-tab-link:hover,
+    .settings-tab-link.active {
+      background: var(--primary-color-light);
+      color: var(--primary-color);
+    }
+    
+    .settings-tab-link i {
+      width: 20px;
+      margin-right: 0.75rem;
+    }
+    
+    .settings-content {
+      flex: 1;
+    }
+    
+    .settings-tab {
+      display: none;
+    }
+    
+    .settings-tab.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+    
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--border-color);
+      transition: all var(--transition-base);
+    }
+    
+    .profile-avatar:hover {
+      border-color: var(--primary-color);
+      transform: scale(1.05);
+    }
+    
+    .profile-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    .notification-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      transition: var(--transition-base);
+    }
+    
+    .notification-item:hover {
+      background-color: var(--sidebar-bg);
+    }
+    
+    .notification-item:last-child {
+      border-bottom: none;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--border-color);
+      transition: .4s;
+      border-radius: 34px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background-color: var(--primary-color);
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    
+    .subscription-info {
+      padding: 1rem 0;
+    }
+    
+    .subscription-info h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    .card-body {
+      padding: 1rem 0;
+    }
+
+    /* Loading animation for save buttons */
+    .btn-saving {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-saving::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border: 2px solid transparent;
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .sidebar {
+        width: 80px;
+        padding: 1rem 0.5rem;
+      }
+      
+      .sidebar-header .logo span {
+        display: none;
+      }
+      
+      .main-nav .nav-link span {
+        display: none;
+      }
+      
+      .main-nav .nav-link i {
+        margin-right: 0;
+      }
+      
+      .theme-switch span {
+        display: none;
+      }
+      
+      .main-content {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+        padding: 1.5rem;
+      }
+      
+      .settings-container {
+        flex-direction: column;
+      }
+      
+      .settings-sidebar {
+        width: 100%;
+      }
+      
+      .settings-tabs {
+        display: flex;
+        overflow-x: auto;
+      }
+      
+      .settings-tab-link {
+        flex-shrink: 0;
+        border-bottom: none;
+        border-right: 1px solid var(--border-color);
+      }
+      
+      .settings-tab-link:last-child {
+        border-right: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem;
+      }
+      
+      .sidebar-header {
+        padding-bottom: 0;
+        border-bottom: none;
+        margin-bottom: 0;
+        margin-right: 1rem;
+      }
+      
+      .main-nav {
+        flex-direction: row;
+        gap: 0.25rem;
+      }
+      
+      .main-nav .nav-link {
+        padding: 0.5rem;
+      }
+      
+      .theme-switch {
+        margin-top: 0;
+        margin-left: auto;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+      
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .user-profile-container {
+        width: 100%;
+      }
+      
+      .user-profile {
+        width: 100%;
+        justify-content: flex-end;
+      }
+      
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+      
+      .settings-tabs {
+        flex-direction: column;
+      }
+      
+      .settings-tab-link {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+      
+      .settings-tab-link:last-child {
+        border-bottom: none;
+      }
+      
+      .notification-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-header">
+          <h1 class="logo">
+            <span class="logo-icon">AI</span>
+            <span>Agri-Intel 360</span>
+          </h1>
+        </div>
+        <nav class="main-nav">
+          <a href="index.html" class="nav-link">
+            <i class="fas fa-chart-line"></i>
+            <span>Tableau de Bord</span>
+          </a>
+          <a href="market.html" class="nav-link">
+            <i class="fas fa-chart-bar"></i>
+            <span>Marchés</span>
+          </a>
+          <a href="weather.html" class="nav-link">
+            <i class="fas fa-cloud-sun"></i>
+            <span>Météo</span>
+          </a>
+          <a href="crop-health.html" class="nav-link">
+            <i class="fas fa-seedling"></i>
+            <span>Santé des Cultures</span>
+          </a>
+          <a href="forum.html" class="nav-link">
+            <i class="fas fa-comments"></i>
+            <span>Forum</span>
+          </a>
+          <a href="subscription.html" class="nav-link">
+            <i class="fas fa-star"></i>
+            <span>Abonnement</span>
+          </a>
+          <a href="settings.html" class="nav-link active">
+            <i class="fas fa-cog"></i>
+            <span>Paramètres</span>
+          </a>
+        </nav>
+      </div>
+      
+      <div class="theme-switch" id="theme-switch">
+        <span>Mode sombre</span>
+        <i class="fas fa-moon"></i>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h2 class="page-title">
+          <i class="fas fa-cog"></i>
+          Paramètres
+        </h2>
+        <div class="user-profile-container" id="user-profile-container">
+          <div class="user-profile" id="user-profile-button">
+            <img src="https://i.pravatar.cc/40?u=agriculteur" alt="Avatar utilisateur"/>
+            <span>Jean Dupont</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <ul class="dropdown-menu" id="user-dropdown">
+            <li><a href="profile.html"><i class="fas fa-user"></i>Mon Profil</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i>Paramètres</a></li>
+            <li><a href="notifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li class="dropdown-divider"></li>
+            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i>Se Déconnecter</a></li>
+          </ul>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <div class="settings-container">
+          <div class="settings-sidebar">
+            <div class="settings-tabs">
+              <a href="#profile" class="settings-tab-link active" data-tab="profile-tab">
+                <i class="fas fa-user"></i>
+                <span>Profil</span>
+              </a>
+              <a href="#notifications" class="settings-tab-link" data-tab="notifications-tab">
+                <i class="fas fa-bell"></i>
+                <span>Notifications</span>
+              </a>
+              <a href="#privacy" class="settings-tab-link" data-tab="privacy-tab">
+                <i class="fas fa-shield-alt"></i>
+                <span>Confidentialité</span>
+              </a>
+              <a href="#account" class="settings-tab-link" data-tab="account-tab">
+                <i class="fas fa-user-cog"></i>
+                <span>Compte</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="settings-content">
+            <!-- Profile Tab -->
+            <div id="profile-tab" class="settings-tab active">
+              <div class="profile-header">
+                <img src="https://i.pravatar.cc/100?u=agriculteur" alt="Profile" class="profile-avatar">
+                <div>
+                  <h3>Jean Dupont</h3>
+                  <p class="text-secondary">Agriculteur à Toulouse, France</p>
+                  <div class="profile-actions">
+                    <button class="btn btn-secondary btn-icon">
+                      <i class="fas fa-camera"></i>
+                    </button>
+                    <button class="btn btn-secondary">
+                      <i class="fas fa-sync"></i>
+                      Changer la photo
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <form>
+                <div class="grid grid-2">
+                  <div class="form-group">
+                    <label class="form-label">Prénom</label>
+                    <input type="text" class="form-control" value="Jean">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Nom</label>
+                    <input type="text" class="form-control" value="Dupont">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control" value="jean.dupont@example.com">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Téléphone</label>
+                  <input type="tel" class="form-control" value="+33 6 12 34 56 78">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Exploitation</label>
+                  <input type="text" class="form-control" value="Ferme de la Vallée">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Localisation</label>
+                  <input type="text" class="form-control" value="Toulouse, France">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Superficie (ha)</label>
+                  <input type="number" class="form-control" value="120">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Cultures principales</label>
+                  <select class="form-select" multiple style="height: 120px;">
+                    <option selected>Blé</option>
+                    <option selected>Maïs</option>
+                    <option>Orge</option>
+                    <option>Colza</option>
+                    <option>Tournesol</option>
+                    <option>Soja</option>
+                    <option>Pois</option>
+                  </select>
+                  <small class="text-secondary">Maintenez Ctrl pour sélectionner plusieurs cultures</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="save-profile">
+                  <i class="fas fa-save"></i>
+                  Enregistrer les modifications
+                </button>
+              </form>
+            </div>
+
+            <!-- Notifications Tab -->
+            <div id="notifications-tab" class="settings-tab">
+              <h3>Préférences de notifications</h3>
+              <p class="text-secondary mb-3">Gérez comment vous recevez les notifications et alertes</p>
+
+              <div class="card">
+                <div class="notification-item">
+                  <div>
+                    <h4>Alertes météo</h4>
+                    <p class="text-secondary">Notifications pour les changements météo importants</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="notification-item">
+                  <div>
+                    <h4>Alertes marché</h4>
+                    <p class="text-secondary">Notifications pour les fluctuations des prix</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="notification-item">
+                  <div>
+                    <h4>Alertes santé des cultures</h4>
+                    <p class="text-secondary">Notifications pour les problèmes détectés</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="notification-item">
+                  <div>
+                    <h4>Nouvelles politiques</h4>
+                    <p class="text-secondary">Notifications pour les nouvelles réglementations</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="notification-item">
+                  <div>
+                    <h4>Rapports hebdomadaires</h4>
+                    <p class="text-secondary">Résumé hebdomadaire de votre exploitation</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Fréquence des rapports</label>
+                <select class="form-select">
+                  <option>Quotidien</option>
+                  <option selected>Hebdomadaire</option>
+                  <option>Mensuel</option>
+                </select>
+              </div>
+
+              <button type="button" class="btn btn-primary" id="save-notifications">
+                <i class="fas fa-save"></i>
+                Enregistrer les préférences
+              </button>
+            </div>
+
+            <!-- Privacy Tab -->
+            <div id="privacy-tab" class="settings-tab">
+              <h3>Paramètres de confidentialité</h3>
+              <p class="text-secondary mb-3">Contrôlez comment vos données sont utilisées et partagées</p>
+
+              <div class="card">
+                <div class="notification-item">
+                  <div>
+                    <h4>Partage de données anonymisées</h4>
+                    <p class="text-secondary">Autoriser l'utilisation de vos données anonymisées pour améliorer les services</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="notification-item">
+                  <div>
+                    <h4>Recommandations personnalisées</h4>
+                    <p class="text-secondary">Utiliser vos données pour des recommandations personnalisées</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+
+                <div class="notification-item">
+                  <div>
+                    <h4>Profil public</h4>
+                    <p class="text-secondary">Rendre votre profil visible par d'autres agriculteurs</p>
+                  </div>
+                  <label class="toggle-switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Durée de conservation des données</label>
+                <select class="form-select">
+                  <option>6 mois</option>
+                  <option selected>1 an</option>
+                  <option>2 ans</option>
+                  <option>5 ans</option>
+                  <option>Indéfiniment</option>
+                </select>
+              </div>
+
+              <div class="mt-4">
+                <h4>Télécharger vos données</h4>
+                <p class="text-secondary">Obtenez une copie de toutes les données que nous détenons sur vous</p>
+                <button type="button" class="btn btn-outline">
+                  <i class="fas fa-download"></i>
+                  Télécharger les données
+                </button>
+              </div>
+
+              <div class="mt-4">
+                <h4>Supprimer votre compte</h4>
+                <p class="text-secondary">Cette action est irréversible et supprimera toutes vos données</p>
+                <button type="button" class="btn btn-danger">
+                  <i class="fas fa-trash"></i>
+                  Supprimer le compte
+                </button>
+              </div>
+            </div>
+
+            <!-- Account Tab -->
+            <div id="account-tab" class="settings-tab">
+              <h3>Paramètres du compte</h3>
+              <p class="text-secondary mb-3">Gérez les paramètres de votre compte et abonnement</p>
+
+              <div class="card">
+                <div class="card-header">
+                  <h4 class="card-title">
+                    <i class="fas fa-crown"></i>
+                    Abonnement actuel
+                  </h4>
+                </div>
+                <div class="card-body">
+                  <div class="subscription-info">
+                    <h3 class="text-primary">Premium</h3>
+                    <p class="text-secondary">Renouvellement automatique le 15/12/2023</p>
+                    <p>Accès à toutes les fonctionnalités avancées</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group mt-3">
+                <label class="form-label">Langue</label>
+                <select class="form-select">
+                  <option selected>Français</option>
+                  <option>English</option>
+                  <option>Español</option>
+                  <option>Deutsch</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Unités de mesure</label>
+                <select class="form-select">
+                  <option selected>Système métrique</option>
+                  <option>Système impérial</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Devise</label>
+                <select class="form-select">
+                  <option selected>Euro (EUR)</option>
+                  <option>Dollar US (USD)</option>
+                  <option>Livre Sterling (GBP)</option>
+                </select>
+              </div>
+
+              <div class="mt-4">
+                <h4>Changer le mot de passe</h4>
+                <div class="form-group">
+                  <label class="form-label">Mot de passe actuel</label>
+                  <input type="password" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Nouveau mot de passe</label>
+                  <input type="password" class="form-control">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Confirmer le nouveau mot de passe</label>
+                  <input type="password" class="form-control">
+                </div>
+                <button type="button" class="btn btn-primary" id="save-password">
+                  <i class="fas fa-key"></i>
+                  Mettre à jour le mot de passe
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Gestion du menu utilisateur
+      const profileBtn = document.getElementById("user-profile-button");
+      const profileContainer = document.getElementById("user-profile-container");
+
+      profileBtn.addEventListener("click", () => {
+        profileContainer.classList.toggle("active");
+      });
+
+      // Fermer le menu déroulant en cliquant à l'extérieur
+      document.addEventListener("click", (e) => {
+        if (!profileContainer.contains(e.target)) {
+          profileContainer.classList.remove("active");
+        }
+      });
+
+      // Gestion des onglets des paramètres
+      const tabLinks = document.querySelectorAll(".settings-tab-link");
+      const tabs = document.querySelectorAll(".settings-tab");
+
+      tabLinks.forEach(link => {
+        link.addEventListener("click", (e) => {
+          e.preventDefault();
+          
+          // Supprimer la classe active de tous les liens et onglets
+          tabLinks.forEach(l => l.classList.remove("active"));
+          tabs.forEach(t => t.classList.remove("active"));
+          
+          // Ajouter la classe active au lien cliqué
+          link.classList.add("active");
+          
+          // Afficher l'onglet correspondant
+          const tabId = link.getAttribute("data-tab");
+          document.getElementById(tabId).classList.add("active");
+        });
+      });
+
+      // Gestion du thème sombre/clair
+      const themeSwitch = document.getElementById("theme-switch");
+      const body = document.body;
+
+      // Vérifier si un thème est déjà enregistré
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") {
+        body.classList.add("dark-mode");
+        themeSwitch.querySelector("i").className = "fas fa-sun";
+        themeSwitch.querySelector("span").textContent = "Mode clair";
+      }
+
+      themeSwitch.addEventListener("click", () => {
+        body.classList.toggle("dark-mode");
+        
+        if (body.classList.contains("dark-mode")) {
+          localStorage.setItem("theme", "dark");
+          themeSwitch.querySelector("i").className = "fas fa-sun";
+          themeSwitch.querySelector("span").textContent = "Mode clair";
+        } else {
+          localStorage.setItem("theme", "light");
+          themeSwitch.querySelector("i").className = "fas fa-moon";
+          themeSwitch.querySelector("span").textContent = "Mode sombre";
+        }
+      });
+
+      // Animation de sauvegarde
+      const saveButtons = document.querySelectorAll("#save-profile, #save-notifications, #save-password");
+      
+      saveButtons.forEach(button => {
+        button.addEventListener("click", function(e) {
+          e.preventDefault();
+          
+          const originalText = this.innerHTML;
+          this.classList.add("btn-saving");
+          this.disabled = true;
+          
+          // Simuler un délai de sauvegarde
+          setTimeout(() => {
+            this.classList.remove("btn-saving");
+            this.innerHTML = '<i class="fas fa-check"></i> Sauvegardé';
+            this.disabled = false;
+            
+            // Revenir au texte original après 2 secondes
+            setTimeout(() => {
+              this.innerHTML = originalText;
+            }, 2000);
+          }, 1500);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

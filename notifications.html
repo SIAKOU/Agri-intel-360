@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notifications - Agri-Intel 360</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* -------------------------
+       Agri-Intel 360 - Stylesheet
+       Version: 5.0 (Enhanced Notifications)
+    -------------------------- */
+
+    /* --- DESIGN SYSTEM & VARIABLES --- */
+    :root {
+      /* Light Mode */
+      --primary-color: #2c6b2f;
+      --primary-color-light: #4caf50;
+      --primary-color-dark: #204d22;
+      --secondary-color: #ffc107;
+      --secondary-dark: #ffa000;
+      --sidebar-bg: #f5f5f5;
+      --content-bg: #fafafa;
+      --card-bg: #ffffff;
+      --text-primary: #1c1c1c;
+      --text-secondary: #5a5a5a;
+      --border-color: #e0e0e0;
+      --success-color: #388e3c;
+      --warning-color: #f57c00;
+      --error-color: #d32f2f;
+      --info-color: #1976d2;
+
+      /* Dark Mode */
+      --dark-primary-color: #4caf50;
+      --dark-primary-color-dark: #388e3c;
+      --dark-sidebar-bg: #1b1b1b;
+      --dark-content-bg: #121212;
+      --dark-card-bg: #242424;
+      --dark-text-primary: #e0e0e0;
+      --dark-text-secondary: #a0a0a0;
+      --dark-border-color: #424242;
+
+      /* Tokens */
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --border-radius: 12px;
+      --border-radius-sm: 8px;
+      --transition-base: 0.25s ease-in-out;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    body.dark-mode {
+      --primary-color: var(--dark-primary-color);
+      --primary-color-dark: var(--dark-primary-color-dark);
+      --sidebar-bg: var(--dark-sidebar-bg);
+      --content-bg: var(--dark-content-bg);
+      --card-bg: var(--dark-card-bg);
+      --text-primary: var(--dark-text-primary);
+      --text-secondary: var(--dark-text-secondary);
+      --border-color: var(--dark-border-color);
+    }
+
+    /* --- GLOBAL STYLES --- */
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: var(--font-family);
+      background-color: var(--content-bg);
+      color: var(--text-primary);
+      transition: background-color var(--transition-base), color var(--transition-base);
+      line-height: 1.6;
+    }
+
+    /* --- LAYOUT --- */
+    .app-container { 
+      display: flex; 
+      min-height: 100vh; 
+    }
+    
+    .sidebar {
+      width: 260px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border-color);
+      height: 100vh;
+      position: fixed;
+      padding: 1.5rem;
+      transition: all var(--transition-base);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 100;
+    }
+    
+    .main-content {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      padding: 2rem;
+      transition: margin-left var(--transition-base);
+    }
+
+    /* --- COMPONENTS --- */
+    .sidebar-header {
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+    
+    .sidebar-header .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo-icon {
+      background: var(--primary-color);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .main-nav .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      border-radius: var(--border-radius);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all var(--transition-base);
+    }
+    
+    .main-nav .nav-link:hover {
+      background-color: var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    .main-nav .nav-link.active {
+      background-color: var(--primary-color);
+      color: #fff;
+      font-weight: 600;
+    }
+    
+    .main-nav .nav-link i {
+      width: 20px;
+      margin-right: 1rem;
+      color: inherit;
+    }
+
+    .theme-switch {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      border-radius: var(--border-radius);
+      background-color: var(--border-color);
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    
+    .theme-switch span {
+      font-size: 0.9rem;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 1rem 1.5rem;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+    
+    .page-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .page-title i {
+      color: var(--primary-color);
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      transition: all var(--transition-base);
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .card-header {
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* --- USER PROFILE --- */
+    .user-profile-container {
+      position: relative;
+    }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius);
+      transition: var(--transition-base);
+    }
+    
+    .user-profile:hover {
+      background-color: var(--border-color);
+    }
+    
+    .user-profile img {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      right: 0;
+      top: 110%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 0.5rem 0;
+      list-style: none;
+      margin: 0;
+      width: 200px;
+      box-shadow: var(--shadow-hover);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: var(--transition-base);
+    }
+    
+    .dropdown-menu li {
+      padding: 0.5rem 1rem;
+    }
+    
+    .dropdown-menu li a {
+      text-decoration: none;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: var(--transition-base);
+    }
+    
+    .dropdown-menu li:hover {
+      background-color: var(--border-color);
+    }
+    
+    .dropdown-divider {
+      height: 1px;
+      background: var(--border-color);
+      margin: 0.5rem 0;
+    }
+
+    .user-profile-container.active .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition-base);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-color-dark);
+    }
+    
+    .btn-secondary {
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--border-color);
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-icon {
+      padding: 0.5rem;
+      border-radius: 50%;
+    }
+
+    /* Form Controls */
+    .form-control, .form-select {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-sm);
+      background-color: var(--card-bg);
+      color: var(--text-primary);
+      font-family: inherit;
+    }
+    
+    .form-control:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+
+    /* --- NOTIFICATIONS SPECIFIC STYLES --- */
+    .notifications-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .notifications-filters {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      background: none;
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition-base);
+    }
+    
+    .filter-btn.active, .filter-btn:hover {
+      background-color: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+    
+    .notification-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .notification-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.25rem;
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      transition: all var(--transition-base);
+      position: relative;
+    }
+    
+    .notification-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .notification-item.unread {
+      background-color: rgba(33, 150, 243, 0.05);
+      border-left: 4px solid var(--info-color);
+    }
+    
+    .notification-item.important {
+      background-color: rgba(255, 193, 7, 0.05);
+      border-left: 4px solid var(--warning-color);
+    }
+    
+    .notification-item.critical {
+      background-color: rgba(211, 47, 47, 0.05);
+      border-left: 4px solid var(--error-color);
+    }
+    
+    .notification-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .notification-icon.info {
+      background-color: rgba(33, 150, 243, 0.1);
+      color: var(--info-color);
+    }
+    
+    .notification-icon.warning {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--warning-color);
+    }
+    
+    .notification-icon.success {
+      background-color: rgba(76, 175, 80, 0.1);
+      color: var(--success-color);
+    }
+    
+    .notification-icon.danger {
+      background-color: rgba(211, 47, 47, 0.1);
+      color: var(--error-color);
+    }
+    
+    .notification-content {
+      flex: 1;
+    }
+    
+    .notification-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .notification-message {
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+    
+    .notification-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    
+    .notification-time {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    
+    .notification-category {
+      padding: 0.2rem 0.6rem;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    
+    .category-weather {
+      background-color: rgba(33, 150, 243, 0.1);
+      color: var(--info-color);
+    }
+    
+    .category-market {
+      background-color: rgba(76, 175, 80, 0.1);
+      color: var(--success-color);
+    }
+    
+    .category-health {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--warning-color);
+    }
+    
+    .category-system {
+      background-color: rgba(158, 158, 158, 0.1);
+      color: var(--text-secondary);
+    }
+    
+    .notification-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .mark-as-read {
+      color: var(--text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 50%;
+      transition: var(--transition-base);
+    }
+    
+    .mark-as-read:hover {
+      color: var(--primary-color);
+      background-color: var(--border-color);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-secondary);
+    }
+    
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    
+    .empty-state p {
+      margin-bottom: 1.5rem;
+    }
+    
+    .load-more {
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .sidebar {
+        width: 80px;
+        padding: 1rem 0.5rem;
+      }
+      
+      .sidebar-header .logo span {
+        display: none;
+      }
+      
+      .main-nav .nav-link span {
+        display: none;
+      }
+      
+      .main-nav .nav-link i {
+        margin-right: 0;
+      }
+      
+      .theme-switch span {
+        display: none;
+      }
+      
+      .main-content {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+        padding: 1.5rem;
+      }
+      
+      .notifications-filters {
+        flex-wrap: wrap;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem;
+      }
+      
+      .sidebar-header {
+        padding-bottom: 0;
+        border-bottom: none;
+        margin-bottom: 0;
+        margin-right: 1rem;
+      }
+      
+      .main-nav {
+        flex-direction: row;
+        gap: 0.25rem;
+      }
+      
+      .main-nav .nav-link {
+        padding: 0.5rem;
+      }
+      
+      .theme-switch {
+        margin-top: 0;
+        margin-left: auto;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+      
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .user-profile-container {
+        width: 100%;
+      }
+      
+      .user-profile {
+        width: 100%;
+        justify-content: flex-end;
+      }
+      
+      .notifications-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .notification-item {
+        flex-direction: column;
+      }
+      
+      .notification-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .notification-actions {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-header">
+          <h1 class="logo">
+            <span class="logo-icon">AI</span>
+            <span>Agri-Intel 360</span>
+          </h1>
+        </div>
+        <nav class="main-nav">
+          <a href="index.html" class="nav-link">
+            <i class="fas fa-chart-line"></i>
+            <span>Tableau de Bord</span>
+          </a>
+          <a href="market.html" class="nav-link">
+            <i class="fas fa-chart-bar"></i>
+            <span>Marchés</span>
+          </a>
+          <a href="weather.html" class="nav-link">
+            <i class="fas fa-cloud-sun"></i>
+            <span>Météo</span>
+          </a>
+          <a href="crop-health.html" class="nav-link">
+            <i class="fas fa-seedling"></i>
+            <span>Santé des Cultures</span>
+          </a>
+          <a href="forum.html" class="nav-link">
+            <i class="fas fa-comments"></i>
+            <span>Forum</span>
+          </a>
+          <a href="notifications.html" class="nav-link active">
+            <i class="fas fa-bell"></i>
+            <span>Notifications</span>
+          </a>
+        </nav>
+      </div>
+      
+      <div class="theme-switch" id="theme-switch">
+        <span>Mode sombre</span>
+        <i class="fas fa-moon"></i>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h2 class="page-title">
+          <i class="fas fa-bell"></i>
+          Notifications
+        </h2>
+        <div class="user-profile-container" id="user-profile-container">
+          <div class="user-profile" id="user-profile-button">
+            <img src="https://i.pravatar.cc/40?u=agriculteur" alt="Avatar utilisateur"/>
+            <span>Jean Dupont</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <ul class="dropdown-menu" id="user-dropdown">
+            <li><a href="profile.html"><i class="fas fa-user"></i>Mon Profil</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i>Paramètres</a></li>
+            <li><a href="notifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li class="dropdown-divider"></li>
+            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i>Se Déconnecter</a></li>
+          </ul>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <div class="notifications-header">
+          <h3>Vos notifications</h3>
+          <div class="notifications-filters">
+            <button class="filter-btn active">Toutes</button>
+            <button class="filter-btn">Non lues</button>
+            <button class="filter-btn">Alertes</button>
+            <button class="filter-btn">Système</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-list"></i>
+              Dernières notifications
+            </h3>
+            <div class="card-actions">
+              <button class="btn btn-secondary btn-sm" id="mark-all-read">
+                <i class="fas fa-check-double"></i>
+                Tout marquer comme lu
+              </button>
+            </div>
+          </div>
+
+          <div class="notification-list">
+            <!-- Notification non lue - Météo -->
+            <div class="notification-item unread">
+              <div class="notification-icon info">
+                <i class="fas fa-cloud-rain"></i>
+              </div>
+              <div class="notification-content">
+                <div class="notification-title">Alerte Météo</div>
+                <div class="notification-message">
+                  Des précipitations importantes (15-20mm) sont attendues dans votre région mercredi prochain. Planifiez vos travaux en conséquence.
+                </div>
+                <div class="notification-meta">
+                  <span class="notification-time">
+                    <i class="fas fa-clock"></i> Il y a 2 heures
+                  </span>
+                  <span class="notification-category category-weather">Météo</span>
+                </div>
+              </div>
+              <div class="notification-actions">
+                <button class="mark-as-read" title="Marquer comme lu">
+                  <i class="fas fa-check"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Notification importante - Santé des cultures -->
+            <div class="notification-item important">
+              <div class="notification-icon warning">
+                <i class="fas fa-seedling"></i>
+              </div>
+              <div class="notification-content">
+                <div class="notification-title">Alerte Santé des Cultures</div>
+                <div class="notification-message">
+                  Votre analyse de santé des cultures a détecté des signes précoces de mildiou sur vos plants de tomates. Intervention recommandée.
+                </div>
+                <div class="notification-meta">
+                  <span class="notification-time">
+                    <i class="fas fa-clock"></i> Hier à 14:32
+                  </span>
+                  <span class="notification-category category-health">Santé</span>
+                </div>
+              </div>
+              <div class="notification-actions">
+                <button class="mark-as-read" title="Marquer comme lu">
+                  <i class="fas fa-check"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Notification critique - Marché -->
+            <div class="notification-item critical">
+              <div class="notification-icon danger">
+                <i class="fas fa-chart-line"></i>
+              </div>
+              <div class="notification-content">
+                <div class="notification-title">Alerte Marché</div>
+                <div class="notification-message">
+                  Une baisse importante des prix du blé a été observée sur les marchés cette semaine. Consultez les dernières tendances.
+                </div>
+                <div class="notification-meta">
+                  <span class="notification-time">
+                    <i class="fas fa-clock"></i> Avant-hier
+                  </span>
+                  <span class="notification-category category-market">Marché</span>
+                </div>
+              </div>
+              <div class="notification-actions">
+                <button class="mark-as-read" title="Marquer comme lu">
+                  <i class="fas fa-check"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Notification normale - Système -->
+            <div class="notification-item">
+              <div class="notification-icon success">
+                <i class="fas fa-sync"></i>
+              </div>
+              <div class="notification-content">
+                <div class="notification-title">Mise à jour terminée</div>
+                <div class="notification-message">
+                  Votre rapport hebdomadaire a été généré avec succès. Téléchargez-le dès maintenant pour consulter les performances de votre exploitation.
+                </div>
+                <div class="notification-meta">
+                  <span class="notification-time">
+                    <i class="fas fa-clock"></i> Il y a 3 jours
+                  </span>
+                  <span class="notification-category category-system">Système</span>
+                </div>
+              </div>
+              <div class="notification-actions">
+                <button class="mark-as-read" title="Marquer comme lu">
+                  <i class="fas fa-check"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Notification normale - Forum -->
+            <div class="notification-item">
+              <div class="notification-icon info">
+                <i class="fas fa-comments"></i>
+              </div>
+              <div class="notification-content">
+                <div class="notification-title">Nouvelle réponse sur le forum</div>
+                <div class="notification-message">
+                  Marc a répondu à votre question sur l'optimisation de l'irrigation. Consultez sa réponse sur le forum.
+                </div>
+                <div class="notification-meta">
+                  <span class="notification-time">
+                    <i class="fas fa-clock"></i> Il y a 4 jours
+                  </span>
+                  <span class="notification-category category-system">Forum</span>
+                </div>
+              </div>
+              <div class="notification-actions">
+                <button class="mark-as-read" title="Marquer comme lu">
+                  <i class="fas fa-check"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="load-more">
+            <button class="btn btn-outline">
+              <i class="fas fa-history"></i>
+              Charger plus de notifications
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Gestion du menu utilisateur
+      const profileBtn = document.getElementById("user-profile-button");
+      const profileContainer = document.getElementById("user-profile-container");
+
+      profileBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        profileContainer.classList.toggle("active");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!profileContainer.contains(e.target)) {
+          profileContainer.classList.remove("active");
+        }
+      });
+
+      // Gestion du thème sombre/clair
+      const themeSwitch = document.getElementById("theme-switch");
+      const themeIcon = themeSwitch.querySelector("i");
+      
+      themeSwitch.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        
+        if (document.body.classList.contains("dark-mode")) {
+          themeIcon.classList.remove("fa-moon");
+          themeIcon.classList.add("fa-sun");
+        } else {
+          themeIcon.classList.remove("fa-sun");
+          themeIcon.classList.add("fa-moon");
+        }
+        
+        // Sauvegarder la préférence utilisateur
+        localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+      });
+
+      // Appliquer le thème sauvegardé
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+        themeIcon.classList.remove("fa-moon");
+        themeIcon.classList.add("fa-sun");
+      }
+
+      // Gestion des filtres de notifications
+      const filterButtons = document.querySelectorAll(".filter-btn");
+      
+      filterButtons.forEach(button => {
+        button.addEventListener("click", function() {
+          filterButtons.forEach(btn => btn.classList.remove("active"));
+          this.classList.add("active");
+          
+          // Ici, on filtrerait normalement les notifications
+          // Pour cette démo, on simule un chargement
+          const notificationList = document.querySelector(".notification-list");
+          notificationList.style.opacity = "0.5";
+          
+          setTimeout(() => {
+            notificationList.style.opacity = "1";
+          }, 500);
+        });
+      });
+
+      // Marquer une notification comme lue
+      const markAsReadButtons = document.querySelectorAll(".mark-as-read");
+      
+      markAsReadButtons.forEach(button => {
+        button.addEventListener("click", function() {
+          const notificationItem = this.closest(".notification-item");
+          notificationItem.classList.remove("unread");
+          this.style.opacity = "0.5";
+          this.disabled = true;
+          
+          // Mettre à jour le compteur de notifications non lues
+          updateUnreadCount();
+        });
+      });
+
+      // Marquer toutes les notifications comme lues
+      const markAllReadButton = document.getElementById("mark-all-read");
+      
+      markAllReadButton.addEventListener("click", function() {
+        const unreadNotifications = document.querySelectorAll(".notification-item.unread");
+        
+        unreadNotifications.forEach(notification => {
+          notification.classList.remove("unread");
+          const markButton = notification.querySelector(".mark-as-read");
+          if (markButton) {
+            markButton.style.opacity = "0.5";
+            markButton.disabled = true;
+          }
+        });
+        
+        // Mettre à jour le compteur
+        updateUnreadCount();
+        
+        // Feedback visuel
+        this.innerHTML = '<i class="fas fa-check"></i> Toutes marquées comme lues';
+        this.disabled = true;
+        
+        setTimeout(() => {
+          this.innerHTML = '<i class="fas fa-check-double"></i> Tout marquer comme lu';
+          this.disabled = false;
+        }, 2000);
+      });
+
+      // Fonction pour mettre à jour le compteur de notifications non lues
+      function updateUnreadCount() {
+        const unreadCount = document.querySelectorAll(".notification-item.unread").length;
+        const badgeElement = document.querySelector('a[href="notifications.html"] .notification-badge');
+        
+        if (unreadCount > 0) {
+          if (!badgeElement) {
+            const navLink = document.querySelector('a[href="notifications.html"]');
+            const badge = document.createElement('span');
+            badge.className = 'notification-badge';
+            badge.style.cssText = 'background: var(--error-color); color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; margin-left: auto;';
+            badge.textContent = unreadCount;
+            navLink.appendChild(badge);
+          } else {
+            badgeElement.textContent = unreadCount;
+          }
+        } else if (badgeElement) {
+          badgeElement.remove();
+        }
+      }
+
+      // Initialiser le compteur
+      updateUnreadCount();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,563 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Politiques Agricoles - Agri-Intel 360</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Styles spécifiques à la page des politiques */
+    .policy-filters {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    
+    .filter-group {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .simulation-results {
+      margin-top: 2rem;
+    }
+    
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .result-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      text-align: center;
+      transition: all var(--transition-base);
+    }
+    
+    .result-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .result-value {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    
+    .result-positive {
+      color: var(--success-color);
+    }
+    
+    .result-negative {
+      color: var(--danger-color);
+    }
+    
+    .result-neutral {
+      color: var(--text-secondary);
+    }
+    
+    .result-label {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    .chart-container {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    
+    .chart-placeholder {
+      color: var(--text-secondary);
+      text-align: center;
+    }
+    
+    .chart-title {
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+    
+    .policy-list {
+      margin-top: 2rem;
+    }
+    
+    .policy-item {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      transition: all var(--transition-base);
+    }
+    
+    .policy-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .policy-header {
+      display: flex;
+      justify-content: between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .policy-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    
+    .policy-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .badge-subsidy {
+      background: rgba(76, 175, 80, 0.15);
+      color: var(--success-color);
+    }
+    
+    .badge-tax {
+      background: rgba(244, 67, 54, 0.15);
+      color: var(--danger-color);
+    }
+    
+    .badge-regulation {
+      background: rgba(33, 150, 243, 0.15);
+      color: var(--info-color);
+    }
+    
+    .policy-details {
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+    
+    .policy-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+    
+    .policy-impact {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    .impact-title {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+    
+    .impact-list {
+      list-style: none;
+    }
+    
+    .impact-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+    
+    .impact-positive::before {
+      content: "↑";
+      color: var(--success-color);
+      font-weight: bold;
+    }
+    
+    .impact-negative::before {
+      content: "↓";
+      color: var(--danger-color);
+      font-weight: bold;
+    }
+    
+    .impact-neutral::before {
+      content: "→";
+      color: var(--text-secondary);
+      font-weight: bold;
+    }
+    
+    .timeline-filter {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .timeline-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-sm);
+      background: var(--card-bg);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition-base);
+    }
+    
+    .timeline-btn.active {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .policy-filters {
+        flex-direction: column;
+      }
+      
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .policy-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+      
+      .policy-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h1 class="logo">AI-360</h1>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-link">
+          <i>📊</i>
+          <span>Tableau de Bord</span>
+        </a>
+        <a href="market.html" class="nav-link">
+          <i>📈</i>
+          <span>Marchés</span>
+        </a>
+        <a href="weather.html" class="nav-link">
+          <i>🌦️</i>
+          <span>Météo</span>
+        </a>
+        <a href="crop-health.html" class="nav-link">
+          <i>🌱</i>
+          <span>Santé des Cultures</span>
+        </a>
+        <a href="policy.html" class="nav-link active">
+          <i>📜</i>
+          <span>Politiques</span>
+        </a>
+        <a href="forum.html" class="nav-link">
+          <i>💬</i>
+          <span>Forum</span>
+        </a>
+        <a href="subscription.html" class="nav-link">
+          <i>⭐</i>
+          <span>Abonnement</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <h2 class="page-title">
+          <i>📜</i>
+          Politiques Agricoles
+        </h2>
+        <div class="top-bar-actions">
+          <button class="dark-mode-toggle" id="dark-mode-toggle">🌙</button>
+          <div class="user-profile-container">
+            <div class="user-profile">
+              <img src="https://i.pravatar.cc/40?u=agriculteur" alt="Avatar utilisateur">
+              <span>Jean Dupont</span>
+            </div>
+            <ul class="dropdown-menu">
+              <li><a href="settings.html"><i>⚙️</i> Paramètres</a></li>
+              <li class="dropdown-divider"></li>
+              <li><a href="login.html"><i>🚪</i> Se Déconnecter</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Simulateur d'Impact des Politiques</h3>
+            <p class="text-secondary">Évaluez l'impact des politiques agricoles sur votre exploitation</p>
+          </div>
+          
+          <div class="policy-filters">
+            <div class="filter-group">
+              <label class="form-label">Type de politique</label>
+              <select class="form-control" id="policy-type">
+                <option value="">Toutes les politiques</option>
+                <option value="subsidy">Subventions</option>
+                <option value="tax">Taxes</option>
+                <option value="regulation">Régulations</option>
+                <option value="environment">Environnement</option>
+              </select>
+            </div>
+            
+            <div class="filter-group">
+              <label class="form-label">Secteur</label>
+              <select class="form-control" id="sector">
+                <option value="">Tous les secteurs</option>
+                <option value="cereals">Céréales</option>
+                <option value="livestock">Élevage</option>
+                <option value="viticulture">Viticulture</option>
+                <option value="horticulture">Horticulture</option>
+              </select>
+            </div>
+            
+            <div class="filter-group">
+              <label class="form-label">Politique spécifique</label>
+              <select class="form-control" id="specific-policy">
+                <option value="">Choisir une politique...</option>
+                <option value="green-fertilizer" selected>Subvention engrais verts</option>
+                <option value="carbon-tax">Taxe carbone carburants</option>
+                <option value="organic-conversion">Aide conversion bio</option>
+                <option value="water-management">Gestion de l'eau</option>
+                <option value="biodiversity">Protection biodiversité</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="timeline-filter">
+            <button class="timeline-btn active" data-years="1">1 an</button>
+            <button class="timeline-btn" data-years="3">3 ans</button>
+            <button class="timeline-btn" data-years="5">5 ans</button>
+          </div>
+          
+          <button class="btn btn-primary" id="simulate-btn">
+            <i>📊</i>
+            Lancer la simulation
+          </button>
+        </div>
+
+        <div class="simulation-results" id="simulation-results" style="display: none;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Résultats de la Simulation</h3>
+              <p class="text-secondary">Impact de la politique sélectionnée sur votre exploitation</p>
+            </div>
+            
+            <div class="result-grid">
+              <div class="result-card">
+                <div class="result-value result-positive">+8%</div>
+                <div class="result-label">Marge nette</div>
+              </div>
+              
+              <div class="result-card">
+                <div class="result-value result-negative">-12%</div>
+                <div class="result-label">Coûts des intrants</div>
+              </div>
+              
+              <div class="result-card">
+                <div class="result-value result-positive">+15%</div>
+                <div class="result-label">Efficacité</div>
+              </div>
+              
+              <div class="result-card">
+                <div class="result-value result-neutral">0%</div>
+                <div class="result-label">Main d'œuvre</div>
+              </div>
+            </div>
+            
+            <div class="chart-container">
+              <div class="chart-title">Évolution de la marge nette sur 3 ans</div>
+              <div class="chart-placeholder">
+                <p>Graphique d'évolution des indicateurs financiers</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">(Visualisation des tendances et projections)</p>
+              </div>
+            </div>
+            
+            <div class="policy-impact">
+              <h4 class="impact-title">Analyse détaillée de l'impact</h4>
+              <ul class="impact-list">
+                <li class="impact-item impact-positive">Augmentation de la marge nette grâce aux subventions</li>
+                <li class="impact-item impact-positive">Réduction des coûts des intrants à moyen terme</li>
+                <li class="impact-item impact-positive">Amélioration de la qualité des sols à long terme</li>
+                <li class="impact-item impact-negative">Investissement initial nécessaire pour l'adaptation</li>
+                <li class="impact-item impact-neutral">Stabilité de la main d'œuvre requise</li>
+              </ul>
+              
+              <div style="margin-top: 1.5rem; padding: 1rem; background: var(--primary-color-light); border-radius: var(--border-radius);">
+                <h5 style="margin-bottom: 0.5rem; color: var(--primary-color-dark);">💡 Recommandation</h5>
+                <p style="margin: 0; color: var(--text-primary);">
+                  Cette politique est <strong>favorable</strong> pour votre exploitation. L'investissement initial 
+                  est amorti en 2 ans avec une augmentation progressive de la rentabilité.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="policy-list">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Politiques Disponibles</h3>
+              <p class="text-secondary">Liste des politiques agricoles actuelles et à venir</p>
+            </div>
+            
+            <div class="policy-item">
+              <div class="policy-header">
+                <h4 class="policy-title">Subvention pour les engrais verts</h4>
+                <span class="policy-badge badge-subsidy">Subvention</span>
+              </div>
+              <p class="policy-details">
+                Aide financière pour l'utilisation d'engrais verts et pratiques agricoles durables. 
+                Jusqu'à 20% de remboursement sur les coûts d'achat.
+              </p>
+              <div class="policy-meta">
+                <span>📅 Valide jusqu'au 31/12/2024</span>
+                <span>💰 Budget: 15M€</span>
+                <span>🌾 Céréales, Horticulture</span>
+              </div>
+            </div>
+            
+            <div class="policy-item">
+              <div class="policy-header">
+                <h4 class="policy-title">Taxe carbone sur les carburants agricoles</h4>
+                <span class="policy-badge badge-tax">Taxe</span>
+              </div>
+              <p class="policy-details">
+                Nouvelle taxe environnementale sur les carburants fossiles utilisés dans les engins agricoles. 
+                Application progressive sur 3 ans.
+              </p>
+              <div class="policy-meta">
+                <span>📅 Entrée en vigueur: 01/01/2024</span>
+                <span>📈 Augmentation progressive</span>
+                <span>🚜 Tous secteurs</span>
+              </div>
+            </div>
+            
+            <div class="policy-item">
+              <div class="policy-header">
+                <h4 class="policy-title">Aide à la conversion biologique</h4>
+                <span class="policy-badge badge-subsidy">Subvention</span>
+              </div>
+              <p class="policy-details">
+                Soutien financier et technique pour les agriculteurs souhaitant convertir leur exploitation 
+                à l'agriculture biologique. Période de transition de 3 ans.
+              </p>
+              <div class="policy-meta">
+                <span>📅 Programme permanent</span>
+                <span>💰 Jusqu'à 30 000€/an</span>
+                <span>🌱 Tous secteurs</span>
+              </div>
+            </div>
+            
+            <div class="policy-item">
+              <div class="policy-header">
+                <h4 class="policy-title">Régulation de l'usage de l'eau</h4>
+                <span class="policy-badge badge-regulation">Régulation</span>
+              </div>
+              <p class="policy-details">
+                Nouvelles restrictions et quotas d'utilisation de l'eau pour l'irrigation pendant les périodes 
+                de sécheresse. Système de bonus-malus.
+              </p>
+              <div class="policy-meta">
+                <span>📅 Application saisonnière</span>
+                <span>💧 Zones sensibles</span>
+                <span>⚠️ Contrôles renforcés</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Simulation button
+      const simulateBtn = document.getElementById('simulate-btn');
+      const simulationResults = document.getElementById('simulation-results');
+      
+      if (simulateBtn && simulationResults) {
+        simulateBtn.addEventListener('click', function() {
+          // Show loading state
+          const originalText = this.innerHTML;
+          this.innerHTML = '<i>⏳</i> Simulation en cours...';
+          this.disabled = true;
+          
+          // Simulate processing time
+          setTimeout(() => {
+            simulationResults.style.display = 'block';
+            this.innerHTML = originalText;
+            this.disabled = false;
+            
+            // Scroll to results
+            simulationResults.scrollIntoView({ behavior: 'smooth' });
+          }, 1500);
+        });
+      }
+      
+      // Timeline filter
+      const timelineBtns = document.querySelectorAll('.timeline-btn');
+      timelineBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          timelineBtns.forEach(b => b.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Update simulation based on selected timeline
+          const years = this.getAttribute('data-years');
+          updateSimulationResults(years);
+        });
+      });
+      
+      // Policy type filter
+      const policyTypeSelect = document.getElementById('policy-type');
+      if (policyTypeSelect) {
+        policyTypeSelect.addEventListener('change', filterPolicies);
+      }
+      
+      // Sector filter
+      const sectorSelect = document.getElementById('sector');
+      if (sectorSelect) {
+        sectorSelect.addEventListener('change', filterPolicies);
+      }
+      
+      function updateSimulationResults(years) {
+        // This would update results based on selected timeline
+        console.log('Updating simulation for', years, 'years');
+        // In a real implementation, this would fetch new data or recalculate
+      }
+      
+      function filterPolicies() {
+        // This would filter the policy list based on selections
+        const policyType = policyTypeSelect.value;
+        const sector = sectorSelect.value;
+        console.log('Filtering policies by:', policyType, sector);
+        // In a real implementation, this would filter the displayed policies
+      }
+    });
+  </script>
+</body>
+</html>

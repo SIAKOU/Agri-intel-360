@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - Agri-Intel 360</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* --- DESIGN SYSTEM & VARIABLES --- */
+    :root {
+      /* Light Mode */
+      --primary-color: #2c6b2f;
+      --primary-color-light: #4caf50;
+      --primary-color-dark: #204d22;
+      --secondary-color: #ffc107;
+      --secondary-dark: #ffa000;
+      --accent-color: #2196f3;
+      --content-bg: #fafafa;
+      --card-bg: #ffffff;
+      --text-primary: #1c1c1c;
+      --text-secondary: #5a5a5a;
+      --border-color: #e0e0e0;
+      --success-color: #388e3c;
+      --warning-color: #f57c00;
+      --error-color: #d32f2f;
+      --info-color: #1976d2;
+
+      /* Tokens */
+      --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --border-radius: 16px;
+      --border-radius-sm: 8px;
+      --transition-base: 0.3s ease-in-out;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Dark Mode Variables */
+    [data-theme="dark"] {
+      --primary-color: #4caf50;
+      --primary-color-light: #66bb6a;
+      --primary-color-dark: #388e3c;
+      --content-bg: #121212;
+      --card-bg: #1e1e1e;
+      --text-primary: #e0e0e0;
+      --text-secondary: #a0a0a0;
+      --border-color: #424242;
+    }
+
+    /* --- GLOBAL STYLES --- */
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: var(--font-family);
+      background-color: var(--content-bg);
+      color: var(--text-primary);
+      transition: background-color var(--transition-base), color var(--transition-base);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    /* --- AUTH CONTAINER --- */
+    .auth-container {
+      width: 100%;
+      max-width: 440px;
+      padding: 1rem;
+    }
+    
+    .auth-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-lg);
+      padding: 2.5rem;
+      transition: all var(--transition-base);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .auth-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .auth-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary-color), var(--primary-color-light));
+    }
+    
+    .auth-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin-bottom: 1.5rem;
+    }
+    
+    .auth-logo-icon {
+      background: var(--primary-color);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+    
+    .auth-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+    
+    .auth-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+    
+    /* --- FORM STYLES --- */
+    .auth-form {
+      margin-top: 1.5rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: var(--transition-base);
+    }
+    
+    .input-with-icon {
+      position: relative;
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      transition: var(--transition-base);
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 3rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-sm);
+      background-color: var(--card-bg);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 1rem;
+      transition: all var(--transition-base);
+    }
+    
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(44, 107, 47, 0.1);
+    }
+    
+    .form-control:focus + .input-icon {
+      color: var(--primary-color);
+    }
+    
+    .form-control.error {
+      border-color: var(--error-color);
+    }
+    
+    .error-message {
+      display: none;
+      color: var(--error-color);
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
+    }
+    
+    .form-control.error ~ .error-message {
+      display: block;
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: var(--transition-base);
+    }
+    
+    .password-toggle:hover {
+      color: var(--primary-color);
+    }
+    
+    /* --- FORM OPTIONS --- */
+    .auth-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+    
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+    
+    .remember-me input {
+      accent-color: var(--primary-color);
+    }
+    
+    .forgot-password {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color var(--transition-base);
+    }
+    
+    .forgot-password:hover {
+      color: var(--primary-color-dark);
+      text-decoration: underline;
+    }
+    
+    /* --- BUTTONS --- */
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: var(--transition-base);
+      text-decoration: none;
+      width: 100%;
+      font-size: 1rem;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+      box-shadow: 0 4px 14px rgba(44, 107, 47, 0.4);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-color-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(44, 107, 47, 0.5);
+    }
+    
+    .btn-saving {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn-saving::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border: 2px solid transparent;
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* --- DIVIDER --- */
+    .auth-divider {
+      display: flex;
+      align-items: center;
+      margin: 2rem 0;
+      color: var(--text-secondary);
+    }
+    
+    .auth-divider::before,
+    .auth-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+    
+    .auth-divider span {
+      padding: 0 1rem;
+      font-size: 0.9rem;
+    }
+    
+    /* --- SOCIAL AUTH --- */
+    .social-auth {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .social-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius-sm);
+      background: var(--card-bg);
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all var(--transition-base);
+    }
+    
+    .social-btn:hover {
+      background: var(--border-color);
+      transform: translateY(-2px);
+    }
+    
+    /* --- FOOTER --- */
+    .auth-footer {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+    
+    .auth-footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: var(--transition-base);
+    }
+    
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+    
+    /* --- THEME SWITCHER --- */
+    .theme-switcher {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      transition: var(--transition-base);
+      z-index: 10;
+    }
+    
+    .theme-switcher:hover {
+      background: var(--border-color);
+    }
+    
+    /* --- ANIMATIONS --- */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-fadeIn {
+      animation: fadeIn 0.6s ease forwards;
+    }
+    
+    /* --- RESPONSIVE --- */
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 2rem 1.5rem;
+      }
+      
+      .auth-logo {
+        font-size: 1.5rem;
+      }
+      
+      .auth-title {
+        font-size: 1.5rem;
+      }
+      
+      .social-auth {
+        flex-direction: column;
+      }
+      
+      .auth-options {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .theme-switcher {
+        top: 1rem;
+        right: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-card animate-fadeIn">
+      <!-- Theme Switcher -->
+      <button class="theme-switcher" id="theme-switcher">
+        <i class="fas fa-moon"></i>
+      </button>
+      
+      <!-- Header -->
+      <div class="auth-header">
+        <div class="auth-logo">
+          <span class="auth-logo-icon">AI</span>
+          <span>Agri-Intel 360</span>
+        </div>
+        <h1 class="auth-title">Connexion</h1>
+        <p class="auth-subtitle">Accédez à votre plateforme d'intelligence agricole</p>
+      </div>
+
+      <!-- Form -->
+      <form class="auth-form" id="login-form">
+        <div class="form-group">
+          <label for="email" class="form-label">Adresse Email</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><i class="fas fa-envelope"></i></span>
+            <input type="email" id="email" name="email" class="form-control" placeholder="exemple@agri-intel.com" required>
+            <div class="error-message">Veuillez entrer une adresse email valide</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">Mot de passe</label>
+          <div class="input-with-icon">
+            <span class="input-icon"><i class="fas fa-lock"></i></span>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Votre mot de passe" required>
+            <button type="button" class="password-toggle" id="password-toggle">
+              <i class="fas fa-eye"></i>
+            </button>
+            <div class="error-message">Le mot de passe doit contenir au moins 6 caractères</div>
+          </div>
+        </div>
+
+        <div class="auth-options">
+          <label class="remember-me">
+            <input type="checkbox" name="remember">
+            <span>Se souvenir de moi</span>
+          </label>
+          <a href="#" class="forgot-password">Mot de passe oublié ?</a>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="login-button">
+          <i class="fas fa-sign-in-alt"></i>
+          Se connecter
+        </button>
+
+        <div class="auth-divider">
+          <span>Ou continuer avec</span>
+        </div>
+
+        <div class="social-auth">
+          <a href="#" class="social-btn">
+            <i class="fab fa-google"></i>
+            <span>Google</span>
+          </a>
+          <a href="#" class="social-btn">
+            <i class="fab fa-microsoft"></i>
+            <span>Microsoft</span>
+          </a>
+        </div>
+      </form>
+
+      <div class="auth-footer">
+        <p>Nouveau sur Agri-Intel 360 ? <a href="register.html">Créer un compte</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Elements
+      const themeSwitcher = document.getElementById('theme-switcher');
+      const themeIcon = themeSwitcher.querySelector('i');
+      const passwordToggle = document.getElementById('password-toggle');
+      const passwordInput = document.getElementById('password');
+      const passwordIcon = passwordToggle.querySelector('i');
+      const loginForm = document.getElementById('login-form');
+      const loginButton = document.getElementById('login-button');
+      
+      // Theme management
+      function initTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          themeIcon.classList.remove('fa-moon');
+          themeIcon.classList.add('fa-sun');
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          themeIcon.classList.remove('fa-sun');
+          themeIcon.classList.add('fa-moon');
+        }
+      }
+      
+      themeSwitcher.addEventListener('click', () => {
+        if (document.documentElement.getAttribute('data-theme') === 'dark') {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('theme', 'light');
+          themeIcon.classList.remove('fa-sun');
+          themeIcon.classList.add('fa-moon');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('theme', 'dark');
+          themeIcon.classList.remove('fa-moon');
+          themeIcon.classList.add('fa-sun');
+        }
+      });
+      
+      // Password visibility toggle
+      passwordToggle.addEventListener('click', function() {
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          passwordIcon.classList.remove('fa-eye');
+          passwordIcon.classList.add('fa-eye-slash');
+        } else {
+          passwordInput.type = 'password';
+          passwordIcon.classList.remove('fa-eye-slash');
+          passwordIcon.classList.add('fa-eye');
+        }
+      });
+      
+      // Form validation
+      function validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
+      
+      function showError(input, message) {
+        input.classList.add('error');
+        const errorElement = input.parentElement.querySelector('.error-message');
+        if (errorElement) {
+          errorElement.textContent = message;
+          errorElement.style.display = 'block';
+        }
+      }
+      
+      function clearError(input) {
+        input.classList.remove('error');
+        const errorElement = input.parentElement.querySelector('.error-message');
+        if (errorElement) {
+          errorElement.style.display = 'none';
+        }
+      }
+      
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        let isValid = true;
+        
+        // Clear previous errors
+        clearError(email);
+        clearError(password);
+        
+        // Validate email
+        if (!email.value || !validateEmail(email.value)) {
+          showError(email, 'Veuillez entrer une adresse email valide');
+          isValid = false;
+        }
+        
+        // Validate password
+        if (!password.value || password.value.length < 6) {
+          showError(password, 'Le mot de passe doit contenir au moins 6 caractères');
+          isValid = false;
+        }
+        
+        if (isValid) {
+          // Simulate login process
+          const originalText = loginButton.innerHTML;
+          loginButton.innerHTML = '<span>Connexion...</span>';
+          loginButton.classList.add('btn-saving');
+          loginButton.disabled = true;
+          
+          setTimeout(() => {
+            // Reset button state
+            loginButton.classList.remove('btn-saving');
+            loginButton.innerHTML = originalText;
+            loginButton.disabled = false;
+            
+            // Redirect to dashboard (simulated)
+            window.location.href = 'index.html';
+          }, 2000);
+        }
+      });
+      
+      // Real-time validation
+      document.getElementById('email').addEventListener('input', function() {
+        clearError(this);
+      });
+      
+      document.getElementById('password').addEventListener('input', function() {
+        clearError(this);
+      });
+      
+      // Initialize theme
+      initTheme();
+    });
+  </script>
+</body>
+</html>

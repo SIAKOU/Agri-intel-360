@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de Bord - Agri-Intel 360</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* -------------------------
+       Agri-Intel 360 - Stylesheet
+       Version: 5.0 (Enhanced Dashboard)
+    -------------------------- */
+
+    /* --- DESIGN SYSTEM & VARIABLES --- */
+    :root {
+      /* Light Mode */
+      --primary-color: #2c6b2f;
+      --primary-color-light: #4caf50;
+      --primary-color-dark: #204d22;
+      --secondary-color: #ffc107;
+      --secondary-dark: #ffa000;
+      --sidebar-bg: #f5f5f5;
+      --content-bg: #fafafa;
+      --card-bg: #ffffff;
+      --text-primary: #1c1c1c;
+      --text-secondary: #5a5a5a;
+      --border-color: #e0e0e0;
+      --success-color: #388e3c;
+      --warning-color: #f57c00;
+      --error-color: #d32f2f;
+      --info-color: #1976d2;
+
+      /* Dark Mode */
+      --dark-primary-color: #4caf50;
+      --dark-primary-color-dark: #388e3c;
+      --dark-sidebar-bg: #1b1b1b;
+      --dark-content-bg: #121212;
+      --dark-card-bg: #242424;
+      --dark-text-primary: #e0e0e0;
+      --dark-text-secondary: #a0a0a0;
+      --dark-border-color: #424242;
+
+      /* Tokens */
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --border-radius: 12px;
+      --border-radius-sm: 8px;
+      --transition-base: 0.25s ease-in-out;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    body.dark-mode {
+      --primary-color: var(--dark-primary-color);
+      --primary-color-dark: var(--dark-primary-color-dark);
+      --sidebar-bg: var(--dark-sidebar-bg);
+      --content-bg: var(--dark-content-bg);
+      --card-bg: var(--dark-card-bg);
+      --text-primary: var(--dark-text-primary);
+      --text-secondary: var(--dark-text-secondary);
+      --border-color: var(--dark-border-color);
+    }
+
+    /* --- GLOBAL STYLES --- */
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: var(--font-family);
+      background-color: var(--content-bg);
+      color: var(--text-primary);
+      transition: background-color var(--transition-base), color var(--transition-base);
+      line-height: 1.6;
+    }
+
+    /* --- LAYOUT --- */
+    .app-container { 
+      display: flex; 
+      min-height: 100vh; 
+    }
+    
+    .sidebar {
+      width: 260px;
+      background-color: var(--sidebar-bg);
+      border-right: 1px solid var(--border-color);
+      height: 100vh;
+      position: fixed;
+      padding: 1.5rem;
+      transition: all var(--transition-base);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 100;
+    }
+    
+    .main-content {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      padding: 2rem;
+      transition: margin-left var(--transition-base);
+    }
+
+    /* --- COMPONENTS --- */
+    .sidebar-header {
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1.5rem;
+    }
+    
+    .sidebar-header .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .logo-icon {
+      background: var(--primary-color);
+      color: white;
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .main-nav .nav-link {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      border-radius: var(--border-radius);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      transition: all var(--transition-base);
+    }
+    
+    .main-nav .nav-link:hover {
+      background-color: var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    .main-nav .nav-link.active {
+      background-color: var(--primary-color);
+      color: #fff;
+      font-weight: 600;
+    }
+    
+    .main-nav .nav-link i {
+      width: 20px;
+      margin-right: 1rem;
+      color: inherit;
+    }
+
+    .theme-switch {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      border-radius: var(--border-radius);
+      background-color: var(--border-color);
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    
+    .theme-switch span {
+      font-size: 0.9rem;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding: 1rem 1.5rem;
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+    
+    .page-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .page-title i {
+      color: var(--primary-color);
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border-radius: var(--border-radius);
+      border: 1px solid var(--border-color);
+      padding: 1.5rem;
+      transition: all var(--transition-base);
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+    
+    .card-header {
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .card-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Stats Cards */
+    .stat-card {
+      text-align: center;
+      padding: 1.5rem;
+    }
+    
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin: 0.5rem 0;
+      color: var(--primary-color);
+    }
+    
+    .stat-unit {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+    
+    .stat-comparison {
+      display: inline-block;
+      padding: 0.35rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-top: 0.5rem;
+    }
+    
+    .stat-positive {
+      background-color: rgba(56, 142, 60, 0.1);
+      color: var(--success-color);
+    }
+    
+    .stat-negative {
+      background-color: rgba(211, 47, 47, 0.1);
+      color: var(--error-color);
+    }
+    
+    .stat-neutral {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--warning-color);
+    }
+
+    /* Charts */
+    .chart-container {
+      width: 100%;
+      height: 250px;
+      margin-top: 1rem;
+      position: relative;
+    }
+    
+    .chart-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      border-radius: var(--border-radius-sm);
+    }
+    
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Alert & Activity Lists */
+    .alert-list, .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .alert-item, .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1rem;
+      border-radius: var(--border-radius-sm);
+      background-color: var(--sidebar-bg);
+      transition: var(--transition-base);
+    }
+    
+    .alert-item:hover, .activity-item:hover {
+      background-color: var(--border-color);
+    }
+    
+    .alert-icon, .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .alert-warning {
+      background-color: rgba(255, 193, 7, 0.1);
+      color: var(--warning-color);
+    }
+    
+    .alert-info {
+      background-color: rgba(33, 150, 243, 0.1);
+      color: var(--info-color);
+    }
+    
+    .activity-icon {
+      background-color: rgba(76, 175, 80, 0.1);
+      color: var(--primary-color);
+    }
+    
+    .alert-content, .activity-content {
+      flex: 1;
+    }
+    
+    .alert-title, .activity-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .alert-description, .activity-time {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition-base);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-color-dark);
+    }
+    
+    .btn-secondary {
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--border-color);
+    }
+    
+    .btn-sm {
+      padding: 0.35rem 0.75rem;
+      font-size: 0.85rem;
+    }
+    
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+    
+    .btn-outline:hover {
+      background-color: var(--border-color);
+    }
+
+    /* --- USER PROFILE --- */
+    .user-profile-container {
+      position: relative;
+    }
+    
+    .user-profile {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      border-radius: var(--border-radius);
+      transition: var(--transition-base);
+    }
+    
+    .user-profile:hover {
+      background-color: var(--border-color);
+    }
+    
+    .user-profile img {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      right: 0;
+      top: 110%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--border-radius);
+      padding: 0.5rem 0;
+      list-style: none;
+      margin: 0;
+      width: 200px;
+      box-shadow: var(--shadow-hover);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: var(--transition-base);
+    }
+    
+    .dropdown-menu li {
+      padding: 0.5rem 1rem;
+    }
+    
+    .dropdown-menu li a {
+      text-decoration: none;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: var(--transition-base);
+    }
+    
+    .dropdown-menu li:hover {
+      background-color: var(--border-color);
+    }
+    
+    .dropdown-divider {
+      height: 1px;
+      background: var(--border-color);
+      margin: 0.5rem 0;
+    }
+
+    .user-profile-container.active .dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 992px) {
+      .sidebar {
+        width: 80px;
+        padding: 1rem 0.5rem;
+      }
+      
+      .sidebar-header .logo span {
+        display: none;
+      }
+      
+      .main-nav .nav-link span {
+        display: none;
+      }
+      
+      .main-nav .nav-link i {
+        margin-right: 0;
+      }
+      
+      .theme-switch span {
+        display: none;
+      }
+      
+      .main-content {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+        padding: 1.5rem;
+      }
+      
+      .grid-3, .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem;
+      }
+      
+      .sidebar-header {
+        padding-bottom: 0;
+        border-bottom: none;
+        margin-bottom: 0;
+        margin-right: 1rem;
+      }
+      
+      .main-nav {
+        flex-direction: row;
+        gap: 0.25rem;
+      }
+      
+      .main-nav .nav-link {
+        padding: 0.5rem;
+      }
+      
+      .theme-switch {
+        margin-top: 0;
+        margin-left: auto;
+      }
+      
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+      }
+      
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .user-profile-container {
+        width: 100%;
+      }
+      
+      .user-profile {
+        width: 100%;
+        justify-content: flex-end;
+      }
+      
+      .stat-value {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div>
+        <div class="sidebar-header">
+          <h1 class="logo">
+            <span class="logo-icon">AI</span>
+            <span>Agri-Intel 360</span>
+          </h1>
+        </div>
+        <nav class="main-nav">
+          <a href="index.html" class="nav-link active">
+            <i class="fas fa-chart-line"></i>
+            <span>Tableau de Bord</span>
+          </a>
+          <a href="market.html" class="nav-link">
+            <i class="fas fa-chart-bar"></i>
+            <span>Marchés</span>
+          </a>
+          <a href="weather.html" class="nav-link">
+            <i class="fas fa-cloud-sun"></i>
+            <span>Météo</span>
+          </a>
+          <a href="crop-health.html" class="nav-link">
+            <i class="fas fa-seedling"></i>
+            <span>Santé des Cultures</span>
+          </a>
+          <a href="policy.html" class="nav-link">
+            <i class="fas fa-file-alt"></i>
+            <span>Politiques</span>
+          </a>
+          <a href="forum.html" class="nav-link">
+            <i class="fas fa-comments"></i>
+            <span>Forum</span>
+          </a>
+          <a href="subscription.html" class="nav-link">
+            <i class="fas fa-star"></i>
+            <span>Abonnement</span>
+          </a>
+        </nav>
+      </div>
+      
+      <div class="theme-switch" id="theme-switch">
+        <span>Mode sombre</span>
+        <i class="fas fa-moon"></i>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="top-bar">
+        <h2 class="page-title">
+          <i class="fas fa-chart-line"></i>
+          Tableau de Bord
+        </h2>
+        <div class="user-profile-container" id="user-profile-container">
+          <div class="user-profile" id="user-profile-button">
+            <img src="https://i.pravatar.cc/40?u=agriculteur" alt="Avatar utilisateur">
+            <span>Jean Dupont</span>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <ul class="dropdown-menu" id="user-dropdown">
+            <li><a href="profile.html"><i class="fas fa-user"></i>Mon Profil</a></li>
+            <li><a href="settings.html"><i class="fas fa-cog"></i>Paramètres</a></li>
+            <li><a href="notifications.html"><i class="fas fa-bell"></i>Notifications</a></li>
+            <li class="dropdown-divider"></li>
+            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i>Se Déconnecter</a></li>
+          </ul>
+        </div>
+      </header>
+
+      <div class="page-content">
+        <!-- Stats Overview -->
+        <div class="grid grid-3">
+          <div class="card stat-card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-wheat"></i>
+                Rendement (Blé)
+              </h3>
+            </div>
+            <p class="text-secondary">Moyenne sur vos parcelles</p>
+            <p class="stat-value">8.2 <span class="stat-unit">t/ha</span></p>
+            <div class="stat-comparison stat-positive">
+              <i class="fas fa-arrow-up"></i> +5% vs l'an dernier
+            </div>
+          </div>
+
+          <div class="card stat-card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-euro-sign"></i>
+                Marge Nette
+              </h3>
+            </div>
+            <p class="text-secondary">Moyenne par tonne</p>
+            <p class="stat-value">71.30 <span class="stat-unit">€/t</span></p>
+            <div class="stat-comparison stat-neutral">
+              <i class="fas fa-minus"></i> Stable
+            </div>
+          </div>
+
+          <div class="card stat-card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-money-bill-wave"></i>
+                Dépenses
+              </h3>
+            </div>
+            <p class="text-secondary">Mois en cours</p>
+            <p class="stat-value">3,245 <span class="stat-unit">€</span></p>
+            <div class="stat-comparison stat-negative">
+              <i class="fas fa-arrow-up"></i> +12% vs budget
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">
+              <i class="fas fa-chart-bar"></i>
+              Prévisions de Marge (€/ha)
+            </h3>
+            <div class="card-actions">
+              <button class="btn btn-sm btn-outline">
+                <i class="fas fa-download"></i>
+                Exporter
+              </button>
+            </div>
+          </div>
+          <div class="chart-container">
+            <div class="chart-placeholder"></div>
+          </div>
+        </div>
+
+        <!-- Alerts & Activities -->
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-bell"></i>
+                Alertes Récentes
+              </h3>
+            </div>
+            <div class="alert-list">
+              <div class="alert-item">
+                <div class="alert-icon alert-warning">
+                  <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="alert-content">
+                  <div class="alert-title">Risque de gel nocturne</div>
+                  <div class="alert-description">Prévision de températures négatives dans 3 jours</div>
+                </div>
+              </div>
+              <div class="alert-item">
+                <div class="alert-icon alert-info">
+                  <i class="fas fa-cloud-rain"></i>
+                </div>
+                <div class="alert-content">
+                  <div class="alert-title">Précipitations attendues</div>
+                  <div class="alert-description">15mm de pluie prévus demain</div>
+                </div>
+              </div>
+              <div class="alert-item">
+                <div class="alert-icon alert-warning">
+                  <i class="fas fa-bug"></i>
+                </div>
+                <div class="alert-content">
+                  <div class="alert-title">Alerte parasites</div>
+                  <div class="alert-description">Présence de pucerons détectée dans le secteur</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">
+                <i class="fas fa-history"></i>
+                Activité Récente
+              </h3>
+            </div>
+            <div class="activity-list">
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-title">Rapport de sol généré</div>
+                  <div class="activity-time">Il y a 2 heures</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <i class="fas fa-seedling"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-title">Analyse de santé des cultures</div>
+                  <div class="activity-time">Hier à 14:32</div>
+                </div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-icon">
+                  <i class="fas fa-tint"></i>
+                </div>
+                <div class="activity-content">
+                  <div class="activity-title">Programme d'irrigation mis à jour</div>
+                  <div class="activity-time">Lundi à 09:15</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Gestion du menu utilisateur
+      const profileBtn = document.getElementById("user-profile-button");
+      const profileContainer = document.getElementById("user-profile-container");
+
+      profileBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        profileContainer.classList.toggle("active");
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!profileContainer.contains(e.target)) {
+          profileContainer.classList.remove("active");
+        }
+      });
+
+      // Gestion du thème sombre/clair
+      const themeSwitch = document.getElementById("theme-switch");
+      const themeIcon = themeSwitch.querySelector("i");
+      
+      themeSwitch.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        
+        if (document.body.classList.contains("dark-mode")) {
+          themeIcon.classList.remove("fa-moon");
+          themeIcon.classList.add("fa-sun");
+        } else {
+          themeIcon.classList.remove("fa-sun");
+          themeIcon.classList.add("fa-moon");
+        }
+        
+        // Sauvegarder la préférence utilisateur
+        localStorage.setItem("theme", document.body.classList.contains("dark-mode") ? "dark" : "light");
+      });
+
+      // Appliquer le thème sauvegardé
+      const savedTheme = localStorage.getItem("theme");
+      if (savedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+        themeIcon.classList.remove("fa-moon");
+        themeIcon.classList.add("fa-sun");
+      }
+
+      // Simulation de données de graphiques
+      const chartPlaceholders = document.querySelectorAll(".chart-placeholder");
+      chartPlaceholders.forEach(chart => {
+        // Simuler un délai de chargement
+        setTimeout(() => {
+          chart.innerHTML = "<div style='display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-secondary)'><i class='fas fa-chart-bar' style='font-size: 3rem; opacity: 0.3;'></i></div>";
+        }, 1000);
+      });
+
+      // Initialiser les graphiques (simulation)
+      setTimeout(() => {
+        console.log("Graphiques initialisés");
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

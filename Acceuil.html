@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agri-Intel 360 - Plateforme d'Intelligence Agricole</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* --- DESIGN SYSTEM & VARIABLES --- */
+    :root {
+      /* Light Mode */
+      --primary-color: #2c6b2f;
+      --primary-color-light: #4caf50;
+      --primary-color-dark: #204d22;
+      --secondary-color: #ffc107;
+      --secondary-dark: #ffa000;
+      --accent-color: #2196f3;
+      --content-bg: #fafafa;
+      --card-bg: #ffffff;
+      --text-primary: #1c1c1c;
+      --text-secondary: #5a5a5a;
+      --border-color: #e0e0e0;
+      --success-color: #388e3c;
+      --warning-color: #f57c00;
+      --error-color: #d32f2f;
+      --info-color: #1976d2;
+
+      /* Tokens */
+      --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --border-radius: 16px;
+      --border-radius-sm: 8px;
+      --transition-base: 0.3s ease-in-out;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      --shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    /* --- GLOBAL STYLES --- */
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: var(--font-family);
+      background-color: var(--content-bg);
+      color: var(--text-primary);
+      transition: background-color var(--transition-base), color var(--transition-base);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* --- LAYOUT --- */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* --- HEADER & NAVIGATION --- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+      z-index: 1000;
+      padding: 1rem 0;
+      transition: var(--transition-base);
+    }
+
+    header.scrolled {
+      padding: 0.75rem 0;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      background: var(--primary-color);
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 500;
+      position: relative;
+      transition: var(--transition-base);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-color);
+      transition: var(--transition-base);
+    }
+
+    .nav-link:hover {
+      color: var(--primary-color);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: var(--primary-color);
+    }
+
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: var(--transition-base);
+      text-decoration: none;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+      box-shadow: 0 4px 14px rgba(44, 107, 47, 0.4);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-color-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(44, 107, 47, 0.5);
+    }
+    
+    .btn-secondary {
+      background-color: transparent;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+    
+    .btn-secondary:hover {
+      background-color: rgba(44, 107, 47, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .btn-lg {
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      padding: 10rem 0 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-container {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .hero-content {
+      flex: 1;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      color: var(--text-primary);
+    }
+
+    .hero-title span {
+      color: var(--primary-color);
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-image {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 1s ease;
+    }
+
+    .hero:hover .hero-image img {
+      transform: scale(1.05);
+    }
+
+    /* FEATURES SECTION */
+    .section {
+      padding: 5rem 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-title h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .section-title p {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      transition: var(--transition-base);
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .feature-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-size: 2rem;
+      background: rgba(44, 107, 47, 0.1);
+      color: var(--primary-color);
+    }
+
+    .feature-title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+    }
+
+    .feature-description {
+      color: var(--text-secondary);
+    }
+
+    /* HOW IT WORKS SECTION */
+    .how-it-works {
+      background: linear-gradient(135deg, rgba(44, 107, 47, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+      position: relative;
+    }
+
+    .steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 4rem 0;
+    }
+
+    .steps::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, var(--primary-color-light), var(--primary-color-dark));
+      z-index: 1;
+    }
+
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+
+    .step-number {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary-color);
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 20px rgba(44, 107, 47, 0.3);
+    }
+
+    .step-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .step-description {
+      color: var(--text-secondary);
+      max-width: 250px;
+    }
+
+    /* TESTIMONIALS SECTION */
+    .testimonials-container {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .testimonials {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .testimonial {
+      min-width: 100%;
+      padding: 2rem;
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .testimonial-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 1.5rem;
+      border: 4px solid var(--primary-color-light);
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      line-height: 1.8;
+    }
+
+    .testimonial-author {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .testimonial-role {
+      color: var(--primary-color);
+      font-size: 0.9rem;
+    }
+
+    .testimonial-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .testimonial-control {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--border-color);
+      cursor: pointer;
+      transition: var(--transition-base);
+    }
+
+    .testimonial-control.active {
+      background: var(--primary-color);
+      transform: scale(1.2);
+    }
+
+    /* CTA SECTION */
+    .cta {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color-dark) 100%);
+      color: white;
+      text-align: center;
+      padding: 6rem 0;
+      border-radius: var(--border-radius);
+      margin: 4rem 0;
+    }
+
+    .cta-title {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2.5rem;
+      opacity: 0.9;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-button {
+      background: white;
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+
+    .cta-button:hover {
+      background: rgba(255, 255, 255, 0.9);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--text-primary);
+      color: white;
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .footer-logo-icon {
+      background: white;
+      color: var(--primary-color);
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .footer-logo-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    .footer-description {
+      opacity: 0.8;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      text-decoration: none;
+      transition: var(--transition-base);
+    }
+
+    .social-link:hover {
+      background: var(--primary-color);
+      transform: translateY(-3px);
+    }
+
+    .footer-title {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      padding-bottom: 0.5rem;
+    }
+
+    .footer-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 40px;
+      height: 2px;
+      background: var(--primary-color);
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: var(--transition-base);
+    }
+
+    .footer-links a:hover {
+      color: white;
+      padding-left: 5px;
+    }
+
+    .footer-newsletter p {
+      opacity: 0.8;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .newsletter-form {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: var(--border-radius-sm);
+      font-family: inherit;
+    }
+
+    .newsletter-input:focus {
+      outline: 2px solid var(--primary-color);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      opacity: 0.7;
+      font-size: 0.9rem;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .animate-fadeIn {
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .animate-float {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      .hero-title {
+        font-size: 2.8rem;
+      }
+      
+      .hero-container {
+        flex-direction: column;
+      }
+      
+      .hero-image {
+        width: 100%;
+        margin-top: 3rem;
+      }
+      
+      .steps {
+        flex-direction: column;
+        gap: 2rem;
+      }
+      
+      .steps::before {
+        display: none;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .nav-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: white;
+        flex-direction: column;
+        padding: 6rem 2rem 2rem;
+        box-shadow: var(--shadow-lg);
+        transition: right 0.3s ease;
+        z-index: 999;
+      }
+      
+      .nav-menu.active {
+        right: 0;
+      }
+      
+      .hero-title {
+        font-size: 2.2rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .section-title h2 {
+        font-size: 2rem;
+      }
+      
+      .feature-card {
+        padding: 1.5rem;
+      }
+      
+      .testimonial {
+        padding: 1.5rem;
+      }
+      
+      .newsletter-form {
+        flex-direction: column;
+      }
+
+      .auth-buttons {
+        display: none;
+      }
+    }
+
+    /* Mobile menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .mobile-auth-buttons {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+      
+      .mobile-auth-buttons {
+        display: flex;
+      }
+    }
+
+    .close-menu {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header id="header">
+    <div class="container header-container">
+      <a href="#" class="logo">
+        <span class="logo-icon">AI</span>
+        <span class="logo-text">Agri-Intel 360</span>
+      </a>
+      
+      <button class="mobile-menu-btn" id="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+      
+      <ul class="nav-menu" id="nav-menu">
+        <button class="close-menu" id="close-menu">
+          <i class="fas fa-times"></i>
+        </button>
+        <li><a href="#home" class="nav-link active">Accueil</a></li>
+        <li><a href="#features" class="nav-link">Fonctionnalités</a></li>
+        <li><a href="#pricing" class="nav-link">Tarifs</a></li>
+        <li><a href="#about" class="nav-link">À propos</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+        
+        <div class="mobile-auth-buttons">
+          <a href="login.html" class="btn btn-secondary">Se connecter</a>
+          <a href="register.html" class="btn btn-primary">S'inscrire</a>
+        </div>
+      </ul>
+      
+      <div class="auth-buttons">
+        <a href="login.html" class="btn btn-secondary">Se connecter</a>
+        <a href="register.html" class="btn btn-primary">S'inscrire</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-container">
+        <div class="hero-content animate-fadeIn">
+          <h1 class="hero-title">Transformez votre agriculture avec l'<span>intelligence artificielle</span></h1>
+          <p class="hero-subtitle">Agri-Intel 360 est la plateforme tout-en-un qui révolutionne la gestion agricole grâce à l'analyse de données, l'IA prédictive et des outils collaboratifs.</p>
+          <div class="hero-buttons">
+            <a href="register.html" class="btn btn-primary btn-lg">Commencer gratuitement</a>
+            <a href="#features" class="btn btn-secondary btn-lg">Découvrir les fonctionnalités</a>
+          </div>
+        </div>
+        
+        <div class="hero-image animate-float">
+          <img src="https://wallpaper.forfun.com/fetch/e5/e5a5ffd38f1a154646797d5d834da985.jpeg" alt="Dashboard Agri-Intel 360">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-title">
+        <h2>Une plateforme complète pour les agriculteurs modernes</h2>
+        <p>Découvrez toutes les fonctionnalités conçues pour optimiser votre exploitation et maximiser vos rendements</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="feature-title">Analyses de marché</h3>
+          <p class="feature-description">Suivez les tendances des prix, anticipez les fluctuations du marché et prenez des décisions éclairées pour maximiser votre rentabilité.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-cloud-sun"></i>
+          </div>
+          <h3 class="feature-title">Météo intelligente</h3>
+          <p class="feature-description">Recevez des prévisions hyperlocales et des alertes personnalisées pour protéger vos cultures et optimiser vos planning de travail.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-seedling"></i>
+          </div>
+          <h3 class="feature-title">Santé des cultures</h3>
+          <p class="feature-description">Diagnostiquez les maladies et carences de vos plantes grâce à notre IA de reconnaissance d'images et recevez des recommandations de traitement.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <h3 class="feature-title">Forum communautaire</h3>
+          <p class="feature-description">Échangez avec d'autres agriculteurs, partagez vos expériences et obtenez des conseils personnalisés de la communauté.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <h3 class="feature-title">Politiques agricoles</h3>
+          <p class="feature-description">Simulez l'impact des politiques agricoles sur votre exploitation et identifiez les subventions auxquelles vous avez droit.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3 class="feature-title">Application mobile</h3>
+          <p class="feature-description">Accédez à toutes les fonctionnalités depuis votre smartphone, même hors connexion dans vos champs.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="section how-it-works">
+    <div class="container">
+      <div class="section-title">
+        <h2>Comment ça marche</h2>
+        <p>Agri-Intel 360 transforme vos données en insights actionnables en seulement quelques étapes simples</p>
+      </div>
+      
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h4 class="step-title">Inscription</h4>
+          <p class="step-description">Créez votre compte et configurez votre exploitation en quelques minutes</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">2</div>
+          <h4 class="step-title">Collecte de données</h4>
+          <p class="step-description">Importez vos données ou connectez vos capteurs IoT pour une analyse complète</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">3</div>
+          <h4 class="step-title">Analyse IA</h4>
+          <p class="step-description">Notre intelligence artificielle traite vos données pour générer des insights précieux</p>
+        </div>
+        
+        <div class="step">
+          <div class="step-number">4</div>
+          <h4 class="step-title">Recommandations</h4>
+          <p class="step-description">Recevez des recommandations personnalisées pour optimiser votre exploitation</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-title">
+        <h2>Nos Tarifs</h2>
+        <p>Choisissez l'offre qui correspond le mieux à vos besoins</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-seedling"></i>
+          </div>
+          <h3 class="feature-title">Starter</h3>
+          <p class="feature-description">Parfait pour les petites exploitations</p>
+          <p class="feature-description"><strong>19€/mois</strong></p>
+          <a href="register.html" class="btn btn-primary">Choisir</a>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-tree"></i>
+          </div>
+          <h3 class="feature-title">Pro</h3>
+          <p class="feature-description">Idéal pour les exploitations moyennes</p>
+          <p class="feature-description"><strong>49€/mois</strong></p>
+          <a href="register.html" class="btn btn-primary">Choisir</a>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-tractor"></i>
+          </div>
+          <h3 class="feature-title">Enterprise</h3>
+          <p class="feature-description">Pour les grandes exploitations</p>
+          <p class="feature-description"><strong>99€/mois</strong></p>
+          <a href="register.html" class="btn btn-primary">Choisir</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-title">
+        <h2>À propos de nous</h2>
+        <p>Découvrez l'équipe derrière Agri-Intel 360</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-rocket"></i>
+          </div>
+          <h3 class="feature-title">Notre mission</h3>
+          <p class="feature-description">Révolutionner l'agriculture grâce à l'intelligence artificielle et l'analyse de données pour une production plus durable et rentable.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3 class="feature-title">Notre équipe</h3>
+          <p class="feature-description">Une équipe passionnée d'agronomes, data scientists et développeurs dédiés à l'innovation agricole.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-history"></i>
+          </div>
+          <h3 class="feature-title">Notre histoire</h3>
+          <p class="feature-description">Fondée en 2025, Agri-Intel 360 aide déjà plus de 5000 agriculteurs à travers la France à optimiser leurs exploitations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section class="section">
+    <div class="container">
+      <div class="section-title">
+        <h2>Ils nous font confiance</h2>
+        <p>Découvrez les témoignages des agriculteurs qui ont transformé leur exploitation avec Agri-Intel 360</p>
+      </div>
+      
+      <div class="testimonials-container">
+        <div class="testimonials" id="testimonials">
+          <div class="testimonial">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="Pierre Dubois" class="testimonial-avatar">
+            <p class="testimonial-text">"Grâce aux analyses prédictives d'Agri-Intel 360, j'ai pu anticiper une baisse des prix du blé et ajuster ma stratégie de vente. Résultat : +15% de marge sur l'année !"</p>
+            <div class="testimonial-author">Pierre Dubois</div>
+            <div class="testimonial-role">Céréalier en Normandie</div>
+          </div>
+        </div>
+        
+        <div class="testimonial-controls">
+          <div class="testimonial-control active"></div>
+          <div class="testimonial-control"></div>
+          <div class="testimonial-control"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-title">
+        <h2>Contactez-nous</h2>
+        <p>Nous sommes à votre écoute pour toutes vos questions</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <h3 class="feature-title">Email</h3>
+            <p class="feature-description">contact@agri-intel360.fr</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-phone"></i>
+            </div>
+            <h3 class="feature-title">Téléphone</h3>
+            <p class="feature-description">+33 1 23 45 67 89</p>
+          </div>
+          
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <h3 class="feature-title">Adresse</h3>
+            <p class="feature-description">123 Rue de l'Agriculture, 75000 Paris</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="section">
+    <div class="container">
+      <div class="cta">
+        <h2 class="cta-title">Prêt à révolutionner votre exploitation agricole ?</h2>
+        <p class="cta-subtitle">Rejoignez des milliers d'agriculteurs qui utilisent déjà Agri-Intel 360 pour optimiser leurs rendements et maximiser leurs profits.</p>
+        <a href="register.html" class="btn btn-lg cta-button">Commencer gratuitement</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <span class="footer-logo-icon">AI</span>
+            <span class="footer-logo-text">Agri-Intel 360</span>
+          </div>
+          <p class="footer-description">La plateforme d'intelligence agricole qui transforme vos données en décisions rentables.</p>
+          <div class="social-links">
+            <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        
+        <div>
+          <h3 class="footer-title">Liens rapides</h3>
+          <ul class="footer-links">
+            <li><a href="#home">Accueil</a></li>
+            <li><a href="#features">Fonctionnalités</a></li>
+            <li><a href="#pricing">Tarifs</a></li>
+            <li><a href="#about">À propos</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="footer-title">Support</h3>
+          <ul class="footer-links">
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">Centre d'aide</a></li>
+            <li><a href="#">Tutoriels</a></li>
+            <li><a href="#">Politique de confidentialité</a></li>
+            <li><a href="#">Conditions d'utilisation</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h3 class="footer-title">Newsletter</h3>
+          <p class="footer-description">Abonnez-vous à notre newsletter pour recevoir les dernières actualités et conseils agricoles.</p>
+          <form class="newsletter-form">
+            <input type="email" class="newsletter-input" placeholder="Votre email" required>
+            <button type="submit" class="btn btn-primary">S'abonner</button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2023 Agri-Intel 360. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Navigation menu functionality
+    const header = document.getElementById('header');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const closeMenuBtn = document.getElementById('close-menu');
+    const navMenu = document.getElementById('nav-menu');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    // Toggle mobile menu
+    mobileMenuBtn.addEventListener('click', () => {
+      navMenu.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+    
+    closeMenuBtn.addEventListener('click', () => {
+      navMenu.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    });
+    
+    // Close menu when clicking on a link
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('active');
+        document.body.style.overflow = 'auto';
+        
+        // Update active link
+        navLinks.forEach(item => item.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+    
+    // Header scroll effect
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          const headerHeight = header.offsetHeight;
+          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+          
+          window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+    
+    // Testimonial slider (simplified version)
+    const testimonialControls = document.querySelectorAll('.testimonial-control');
+    
+    testimonialControls.forEach((control, index) => {
+      control.addEventListener('click', () => {
+        testimonialControls.forEach(c => c.classList.remove('active'));
+        control.classList.add('active');
+        
+        // In a real implementation, this would switch the testimonial content
+        console.log(`Switching to testimonial ${index + 1}`);
+      });
+    });
+    
+    // Animation on scroll
+    const animateOnScroll = () => {
+      const elements = document.querySelectorAll('.feature-card, .step, .section-title');
+      
+      elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.3;
+        
+        if (elementPosition < screenPosition) {
+          element.style.opacity = 1;
+          element.style.transform = 'translateY(0)';
+        }
+      });
+    };
+    
+    // Initialize animation styles
+    document.querySelectorAll('.feature-card, .step').forEach(element => {
+      element.style.opacity = 0;
+      element.style.transform = 'translateY(20px)';
+      element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    });
+    
+    window.addEventListener('scroll', animateOnScroll);
+    // Trigger once on load
+    window.addEventListener('load', animateOnScroll);
+  </script>
+</body>
+</html>
